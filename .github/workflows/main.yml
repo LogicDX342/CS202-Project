@@ -1,0 +1,18 @@
+name: Verible linter example
+on:
+  pull_request:
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: chipsalliance/verible-linter-action@main
+      with:
+        config_file: 'config.rules'
+        paths: |
+          ./project.srcs
+        extra_args: "--column_limit=300 --indentation_spaces=4 --assignment_statement_alignment=align --named_port_alignment=align  --port_declarations_alignment=align --module_net_variable_alignment=align --check_syntax=true"
+        verible_version: "v0.0-3253-gf85c768c"
+        extensions: |
+          .v
+        github_token: ${{ secrets.GITHUB_TOKEN }}
