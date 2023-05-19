@@ -1,4 +1,5 @@
-project.cache/
-project.ip_user_files/
-
-
+/project.cache/
+/project.sim/
+/project.hw/
+/project.runs/
+/project.ip_user_files/
