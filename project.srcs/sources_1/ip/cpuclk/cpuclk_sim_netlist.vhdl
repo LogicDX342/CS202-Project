@@ -1,7 +1,7 @@
 -- Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2017.4 (win64) Build 2086221 Fri Dec 15 20:55:39 MST 2017
--- Date        : Fri May 19 21:18:29 2023
+-- Date        : Sat May 20 12:21:42 2023
 -- Host        : DESKTOP-AFM7LO6 running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode funcsim {I:/Computer
 --               Organization/project/project.srcs/sources_1/ip/cpuclk/cpuclk_sim_netlist.vhdl}
@@ -18,6 +18,7 @@ entity cpuclk_cpuclk_clk_wiz is
   port (
     clk_out1 : out STD_LOGIC;
     clk_out2 : out STD_LOGIC;
+    clk_out3 : out STD_LOGIC;
     clk_in1 : in STD_LOGIC
   );
   attribute ORIG_REF_NAME : string;
@@ -28,9 +29,9 @@ architecture STRUCTURE of cpuclk_cpuclk_clk_wiz is
   signal clk_in1_cpuclk : STD_LOGIC;
   signal clk_out1_cpuclk : STD_LOGIC;
   signal clk_out2_cpuclk : STD_LOGIC;
+  signal clk_out3_cpuclk : STD_LOGIC;
   signal clkfbout_buf_cpuclk : STD_LOGIC;
   signal clkfbout_cpuclk : STD_LOGIC;
-  signal NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT5_UNCONNECTED : STD_LOGIC;
@@ -48,6 +49,7 @@ architecture STRUCTURE of cpuclk_cpuclk_clk_wiz is
   attribute IFD_DELAY_VALUE of clkin1_ibufg : label is "AUTO";
   attribute BOX_TYPE of clkout1_buf : label is "PRIMITIVE";
   attribute BOX_TYPE of clkout2_buf : label is "PRIMITIVE";
+  attribute BOX_TYPE of clkout3_buf : label is "PRIMITIVE";
   attribute BOX_TYPE of plle2_adv_inst : label is "PRIMITIVE";
 begin
 clkf_buf: unisim.vcomponents.BUFG
@@ -73,20 +75,25 @@ clkout2_buf: unisim.vcomponents.BUFG
       I => clk_out2_cpuclk,
       O => clk_out2
     );
+clkout3_buf: unisim.vcomponents.BUFG
+     port map (
+      I => clk_out3_cpuclk,
+      O => clk_out3
+    );
 plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
     generic map(
       BANDWIDTH => "OPTIMIZED",
-      CLKFBOUT_MULT => 46,
+      CLKFBOUT_MULT => 23,
       CLKFBOUT_PHASE => 0.000000,
       CLKIN1_PERIOD => 10.000000,
       CLKIN2_PERIOD => 0.000000,
-      CLKOUT0_DIVIDE => 40,
+      CLKOUT0_DIVIDE => 50,
       CLKOUT0_DUTY_CYCLE => 0.500000,
       CLKOUT0_PHASE => 0.000000,
-      CLKOUT1_DIVIDE => 92,
+      CLKOUT1_DIVIDE => 115,
       CLKOUT1_DUTY_CYCLE => 0.500000,
       CLKOUT1_PHASE => 0.000000,
-      CLKOUT2_DIVIDE => 1,
+      CLKOUT2_DIVIDE => 46,
       CLKOUT2_DUTY_CYCLE => 0.500000,
       CLKOUT2_PHASE => 0.000000,
       CLKOUT3_DIVIDE => 1,
@@ -99,7 +106,7 @@ plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
       CLKOUT5_DUTY_CYCLE => 0.500000,
       CLKOUT5_PHASE => 0.000000,
       COMPENSATION => "ZHOLD",
-      DIVCLK_DIVIDE => 5,
+      DIVCLK_DIVIDE => 2,
       IS_CLKINSEL_INVERTED => '0',
       IS_PWRDWN_INVERTED => '0',
       IS_RST_INVERTED => '0',
@@ -115,7 +122,7 @@ plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
       CLKINSEL => '1',
       CLKOUT0 => clk_out1_cpuclk,
       CLKOUT1 => clk_out2_cpuclk,
-      CLKOUT2 => NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED,
+      CLKOUT2 => clk_out3_cpuclk,
       CLKOUT3 => NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED,
       CLKOUT4 => NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED,
       CLKOUT5 => NLW_plle2_adv_inst_CLKOUT5_UNCONNECTED,
@@ -139,6 +146,7 @@ entity cpuclk is
   port (
     clk_out1 : out STD_LOGIC;
     clk_out2 : out STD_LOGIC;
+    clk_out3 : out STD_LOGIC;
     clk_in1 : in STD_LOGIC
   );
   attribute NotValidForBitStream : boolean;
@@ -151,6 +159,7 @@ inst: entity work.cpuclk_cpuclk_clk_wiz
      port map (
       clk_in1 => clk_in1,
       clk_out1 => clk_out1,
-      clk_out2 => clk_out2
+      clk_out2 => clk_out2,
+      clk_out3 => clk_out3
     );
 end STRUCTURE;
