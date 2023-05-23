@@ -32,13 +32,13 @@ input[15:0] io_rdata; // data read from IO,16 bits
 output[31:0] r_wdata; // data to Decoder(register file)
 input[31:0] r_rdata; // data read from Decoder(register file)
 output reg[31:0] write_data; // data to memory or I/O（m_wdata, io_wdata）
-output LEDCtrl; // LED Chip Select
+output LEDCtrl; // LED Chip Select(连接leds模块的ledcs)
 output SwitchCtrl; // Switch Chip Select
 
 assign addr_out= addr_in;
 // The data wirte to register file may be from memory or io. // While the data is from io, it should be the lower 16bit of r_wdata. assign r_wdata = ？？？
 // Chip select signal of Led and Switch are all active high;
-assign r_wdata = ioRead ? {2'b0,io_rdata} : m_rdata;
+assign r_wdata = mRead ? m_rdata :{4'h0,io_rdata} ;
 assign LEDCtrl= ioWrite;
 assign SwitchCtrl= ioRead;
 always @* begin
