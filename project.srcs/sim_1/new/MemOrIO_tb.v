@@ -26,8 +26,7 @@ reg[31:0] addr_in,m_rdata,r_rdata;
 reg[15:0] io_rdata;
 wire LEDCtrl,SwitchCtrl;
 wire [31:0] addr_out,r_wdata,write_data;
-MemOrIO umio(addr_out, addr_in, mRead, 
-mWrite, ioRead, ioWrite, m_rdata, io_rdata, r_rdata, r_wdata, write_data, LEDCtrl, SwitchCtrl );
+MemOrIO umio(mRead, mWrite,ioRead,ioWrite,addr_in, addr_out,m_rdata, io_rdata, r_wdata, r_rdata, write_data, LEDCtrl, SwitchCtrl);
 
 initial begin // r_rdata -> m_wdata(write_data)
 m_rdata = 32'h0xffff_0001;
