@@ -440,7 +440,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_1_1) && (pix_x < POS_X_1_1 + WIDTH) && (pix_y >= POS_Y_1) &&
                 (pix_y < POS_Y_1 + HEIGHT)) begin  
-                case (input_a[7])
+                case (input_a[2])
                     16'd0:
                     if (num_0[y_cnt_1_1][10'd7-x_cnt_1_1]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -452,7 +452,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_1_2) && (pix_x < POS_X_1_2 + WIDTH) && (pix_y >= POS_Y_1) &&
                 (pix_y < POS_Y_1 + HEIGHT)) begin  
-                case (input_a[7])
+                case (input_a[1])
                     16'd0:
                     if (num_0[y_cnt_1_2][10'd7-x_cnt_1_2]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -464,7 +464,7 @@ module vga_pic (
             end  
             if ((pix_x >= POS_X_1_3) && (pix_x < POS_X_1_3 + WIDTH) && (pix_y >= POS_Y_1) &&
                 (pix_y < POS_Y_1 + HEIGHT)) begin  
-                case (input_a[7])
+                case (input_a[0])
                     16'd0:
                     if (num_0[y_cnt_1_3][10'd7-x_cnt_1_3]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -493,7 +493,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_2_2) && (pix_x < POS_X_2_2 + WIDTH) && (pix_y >= POS_Y_2) &&
                 (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[7])
+                case (input_b[6])
                     16'd0:
                     if (num_0[y_cnt_2_2][10'd7-x_cnt_2_2]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -505,7 +505,7 @@ module vga_pic (
             end  
             if ((pix_x >= POS_X_2_3) && (pix_x < POS_X_2_3 + WIDTH) && (pix_y >= POS_Y_2) &&
                 (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[7])
+                case (input_b[5])
                     16'd0:
                     if (num_0[y_cnt_2_3][10'd7-x_cnt_2_3]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -517,7 +517,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_2_4) && (pix_x < POS_X_2_4 + WIDTH) && (pix_y >= POS_Y_2) &&
                 (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[7])
+                case (input_b[4])
                     16'd0:
                     if (num_0[y_cnt_2_4][10'd7-x_cnt_2_4]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -529,7 +529,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_2_5) && (pix_x < POS_X_2_5 + WIDTH) && (pix_y >= POS_Y_2) &&
                 (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[7])
+                case (input_b[3])
                     16'd0:
                     if (num_0[y_cnt_2_5][10'd7-x_cnt_2_5]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -541,7 +541,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_2_6) && (pix_x < POS_X_2_6 + WIDTH) && (pix_y >= POS_Y_2) &&
                 (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[7])
+                case (input_b[2])
                     16'd0:
                     if (num_0[y_cnt_2_6][10'd7-x_cnt_2_6]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -553,7 +553,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_2_7) && (pix_x < POS_X_2_7 + WIDTH) && (pix_y >= POS_Y_2) &&
                 (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[7])
+                case (input_b[1])
                     16'd0:
                     if (num_0[y_cnt_2_7][10'd7-x_cnt_2_7]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -565,7 +565,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_2_8) && (pix_x < POS_X_2_8 + WIDTH) && (pix_y >= POS_Y_2) &&
                 (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[7])
+                case (input_b[0])
                     16'd0:
                     if (num_0[y_cnt_2_8][10'd7-x_cnt_2_8]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -596,7 +596,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_3_2) && (pix_x < POS_X_3_2 + WIDTH) && (pix_y >= POS_Y_3) &&
                 (pix_y < POS_Y_3 + HEIGHT)) begin  
-                case (output_a[7])
+                case (output_a[6])
                     16'd0:
                     if (num_0[y_cnt_3_2][10'd7-x_cnt_3_2]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -608,7 +608,7 @@ module vga_pic (
             end  
             if ((pix_x >= POS_X_3_3) && (pix_x < POS_X_3_3 + WIDTH) && (pix_y >= POS_Y_3) &&
                 (pix_y < POS_Y_3 + HEIGHT)) begin  
-                case (output_a[7])
+                case (output_a[5])
                     16'd0:
                     if (num_0[y_cnt_3_3][10'd7-x_cnt_3_3]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -620,7 +620,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_3_4) && (pix_x < POS_X_3_4 + WIDTH) && (pix_y >= POS_Y_3) &&
                 (pix_y < POS_Y_3 + HEIGHT)) begin  
-                case (output_a[7])
+                case (output_a[4])
                     16'd0:
                     if (num_0[y_cnt_3_4][10'd7-x_cnt_3_4]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -632,7 +632,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_3_5) && (pix_x < POS_X_3_5 + WIDTH) && (pix_y >= POS_Y_3) &&
                 (pix_y < POS_Y_3 + HEIGHT)) begin  
-                case (output_a[7])
+                case (output_a[3])
                     16'd0:
                     if (num_0[y_cnt_3_5][10'd7-x_cnt_3_5]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -644,7 +644,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_3_6) && (pix_x < POS_X_3_6 + WIDTH) && (pix_y >= POS_Y_3) &&
                 (pix_y < POS_Y_3 + HEIGHT)) begin  
-                case (output_a[7])
+                case (output_a[2])
                     16'd0:
                     if (num_0[y_cnt_3_6][10'd7-x_cnt_3_6]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -656,7 +656,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_3_7) && (pix_x < POS_X_3_7 + WIDTH) && (pix_y >= POS_Y_3) &&
                 (pix_y < POS_Y_3 + HEIGHT)) begin  
-                case (output_a[7])
+                case (output_a[1])
                     16'd0:
                     if (num_0[y_cnt_3_7][10'd7-x_cnt_3_7]) pix_data <= GRAY;
                     else pix_data <= BLUE;
@@ -668,7 +668,7 @@ module vga_pic (
             end
             if ((pix_x >= POS_X_3_8) && (pix_x < POS_X_3_8 + WIDTH) && (pix_y >= POS_Y_3) &&
                 (pix_y < POS_Y_3 + HEIGHT)) begin  
-                case (output_a[7])
+                case (output_a[0])
                     16'd0:
                     if (num_0[y_cnt_3_8][10'd7-x_cnt_3_8]) pix_data <= GRAY;
                     else pix_data <= BLUE;

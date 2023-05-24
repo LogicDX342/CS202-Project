@@ -29,14 +29,14 @@ module Debounce (
     parameter key_num = 4'd11;
     input clk;
     input rst_n;
-    input [key_num:0] key_in;
-    output reg [key_num:0] key_out = 11'b0;
+    input [key_num-1:0] key_in;
+    output reg [key_num-1:0] key_out = 11'b0;
 
 
-    reg [key_num:0] key_pre = 11'b0;
-    reg [key_num:0] key_cur = 11'b0;
+    reg [key_num-1:0] key_pre = 11'b0;
+    reg [key_num-1:0] key_cur = 11'b0;
     reg [7:0] cnt = 8'b0;
-    wire [key_num:0] key_edge;
+    wire [key_num-1:0] key_edge;
 
     always @(posedge clk)
     begin

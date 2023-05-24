@@ -21,7 +21,7 @@
 
 module cache #(
         parameter A_WIDTH = 16,
-        parameter C_INDEX = 10,
+        parameter C_INDEX = 6,
         parameter D_WIDTH = 32
     ) (
         input                clk,

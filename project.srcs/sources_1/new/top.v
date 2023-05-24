@@ -21,7 +21,7 @@
 
 
 module CPU_TOP (
-    input         fpga_rst,      //Active High
+    input         fpga_rst_in,   //Active High
     input         fpga_clk,
     input  [15:0] switch2N4_in,
     output [15:0] led2N4,
@@ -54,7 +54,8 @@ module CPU_TOP (
         .clk_out3(vga_clk)
     );
 
-    wire [23:0] switch2N4;
+    wire [15:0] switch2N4;
+    wire fpga_rst;
     wire start_pg;
 
     Debounce #(
@@ -62,30 +63,13 @@ module CPU_TOP (
     ) debounce_dut (
         .clk    (clk),
         .rst_n  (1'b1),
-        .key_in ({fpga_rst, switch2N4_in, start_pg_in}),
-        .key_out({rst, switch2N4, start_pg})
+        .key_in ({fpga_rst_in, switch2N4_in, start_pg_in}),
+        .key_out({fpga_rst, switch2N4, start_pg})
     );
-
-
-
-    uart_bmpg_0 uart (
-        .upg_clk_i (upg_clk),   // 10MHz
-        .upg_rst_i (fpga_rst),  // High active
-        // blkram signals
-        .upg_clk_o (upg_clk),
-        .upg_wen_o (upg_wen),
-        .upg_adr_o (upg_adr),
-        .upg_dat_o (upg_dat),
-        .upg_done_o(upg_done),
-        // UART Pinouts
-        .upg_rx_i  (rx),
-        .upg_tx_o  (tx)
-    );
-
 
 
     reg spg_bufg = 0;
-    always @(posedge start_pg) begin
+    always @(start_pg) begin
         if (fpga_rst) spg_bufg <= 0;
         else spg_bufg <= ~spg_bufg;
     end
@@ -99,13 +83,26 @@ module CPU_TOP (
     //used for other modules which don't relateto UART wire rst;
     assign rst = fpga_rst | !upg_rst;
 
+    uart_bmpg_0 uart (
+        .upg_clk_i (upg_clk),   // 10MHz
+        .upg_rst_i (upg_rst),   // High active
+        // blkram signals
+        .upg_clk_o (),
+        .upg_wen_o (upg_wen),
+        .upg_adr_o (upg_adr),
+        .upg_dat_o (upg_dat),
+        .upg_done_o(upg_done),
+        // UART Pinouts
+        .upg_rx_i  (rx),
+        .upg_tx_o  (tx)
+    );
+
     wire [31:0] Read_data_1;
     wire [31:0] Read_data_2;
     wire [31:0] Sign_extend;
     wire [5:0] Function_opcode;
     wire [5:0] Exe_opcode;
     wire [1:0] ALUOp;
-    wire [4:0] Shamt;
     wire [31:0] PC_plus_4;
     wire Sftmd;
     wire ALUSrc;
@@ -117,18 +114,17 @@ module CPU_TOP (
     wire RegDst;
     wire Branch;
     wire nBranch;
-    wire MemtoReg;
+    wire MemorIOtoReg;
     wire RegWrite;
-    wire memWrite;
-    wire RegDST;
+    wire MemRead;
+    wire MemWrite;
     wire [31:0] ALU_Result;
     wire [31:0] Addr_Result;
     wire [31:0] Instruction;
     wire [15:0] rom_adr;
     wire [31:0] branch_base_addr;
     wire [31:0] link_addr;
-    wire [31:0] Addr_result;
-    wire [31:0] mem_data;
+
 
     programrom programrom_dut (
         .rom_clk_i    (clk),
@@ -137,7 +133,7 @@ module CPU_TOP (
         .upg_rst_i    (upg_rst),
         .upg_clk_i    (upg_clk),
         .upg_wen_i    (upg_wen & upg_adr[14]),
-        .upg_adr_i    (upg_adr),
+        .upg_adr_i    (upg_adr[13:0]),
         .upg_dat_i    (upg_dat),
         .upg_done_i   (upg_done)
     );
@@ -147,7 +143,7 @@ module CPU_TOP (
         .rom_adr_o       (rom_adr),
         .branch_base_addr(branch_base_addr),
         .link_addr       (link_addr),
-        .Addr_result     (Addr_result),
+        .Addr_result     (Addr_Result),
         .Read_data_1     (Read_data_1),
         .Branch          (Branch),
         .nBranch         (nBranch),
@@ -159,6 +155,7 @@ module CPU_TOP (
         .reset           (rst)
     );
 
+    wire [31:0] mem_data;
 
     decode32 decode32_dut (
         .clock      (clk),
@@ -169,31 +166,38 @@ module CPU_TOP (
         .opcplus4   (link_addr),
         .Jal        (Jal),
         .RegWrite   (RegWrite),
-        .MemtoReg   (MemtoReg),
+        .MemtoReg   (MemorIOtoReg),
         .RegDst     (RegDst),
         .Sign_extend(Sign_extend),
         .read_data_1(Read_data_1),
         .read_data_2(Read_data_2)
     );
 
+    wire IORead;
+    wire IOWrite;
 
     control32 control32_dut (
         .Opcode         (Instruction[31:26]),
         .Function_opcode(Instruction[5:0]),
         .Jr             (Jr),
-        .RegDST         (RegDST),
+        .RegDST         (RegDst),
         .ALUSrc         (ALUSrc),
-        .MemtoReg       (MemtoReg),
+        .MemorIOtoReg   (MemorIOtoReg),
         .RegWrite       (RegWrite),
+        .MemRead        (MemRead),
         .MemWrite       (MemWrite),
+        .IORead         (IORead),
+        .IOWrite        (IOWrite),
         .Branch         (Branch),
         .nBranch        (nBranch),
         .Jmp            (Jmp),
         .Jal            (Jal),
         .I_format       (I_format),
         .Sftmd          (Sftmd),
-        .ALUOp          (ALUOp)
+        .ALUOp          (ALUOp),
+        .AlU_resultHigh (ALU_Result[31:10])
     );
+
 
     executs32 executs32_dut (
         .Read_data_1    (Read_data_1),
@@ -202,7 +206,7 @@ module CPU_TOP (
         .Function_opcode(Instruction[5:0]),
         .Exe_opcode     (Instruction[31:26]),
         .ALUOp          (ALUOp),
-        .Shamt          (Shamt),
+        .Shamt          (Instruction[10:6]),
         .PC_plus_4      (branch_base_addr),
         .Sftmd          (Sftmd),
         .ALUSrc         (ALUSrc),
@@ -213,37 +217,71 @@ module CPU_TOP (
         .Addr_Result    (Addr_Result)
     );
 
+    wire [31:0] write_data;
+    wire [31:0] ram_adr_i;
+    wire [31:0] ram_dat_o;
+
     dmemory32 dmemory32_dut (
-        .clock    (clk),
-        .memWrite (memWrite),
-        .address  (address),
-        .writeData(writeData),
-        .readData (readData)
+        .ram_clk_i (clk),
+        .ram_wen_i (MemWrite),
+        .ram_adr_i (ram_adr_i[15:0]),
+        .ram_dat_i (write_data),
+        .ram_dat_o (ram_dat_o),
+        .upg_rst_i (upg_rst),
+        .upg_clk_i (upg_clk),
+        .upg_wen_i (upg_wen & upg_adr[14]),
+        .upg_adr_i (upg_adr[13:0]),
+        .upg_dat_i (upg_dat),
+        .upg_done_i(upg_done)
     );
 
 
+
+    wire [15:0] ioread_data;
+
+    wire LEDCtrl;
+    wire SwitchCtrl;
+
     MemOrIO MemOrIO_dut (
-        .mRead     (mRead),
-        .mWrite    (mWrite),
-        .ioRead    (ioRead),
-        .ioWrite   (ioWrite),
-        .addr_in   (addr_in),
-        .addr_out  (addr_out),
-        .m_rdata   (m_rdata),
-        .io_rdata  (io_rdata),
-        .r_wdata   (r_wdata),
-        .r_rdata   (r_rdata),
+        .mRead     (MemRead),
+        .mWrite    (MemWrite),
+        .ioRead    (IORead),
+        .ioWrite   (IOWrite),
+        .addr_in   (Addr_Result),
+        .addr_out  (ram_adr_i),
+        .m_rdata   (ram_dat_o),
+        .io_rdata  (ioread_data),
+        .r_wdata   (mem_data),
+        .r_rdata   (Read_data_2),
         .write_data(write_data),
         .LEDCtrl   (LEDCtrl),
         .SwitchCtrl(SwitchCtrl)
     );
 
+    leds leds_dut (
+        .ledrst  (rst),
+        .led_clk (clk),
+        .ledwrite(1'b1),
+        .ledcs   (LEDCtrl),
+        .ledwdata(write_data[15:0]),
+        .ledout  (led2N4)
+    );
+
+    ioread ioread_dut (
+        .reset             (rst),
+        .ior               (IORead),
+        .switchctrl        (SwitchCtrl),
+        .ioread_data_switch(switch2N4),
+        .ioread_data       (ioread_data)
+    );
+
+
     vga_colorbar vga_colorbar_dut (
         .vga_clk  (vga_clk),
         .sys_rst_n(~rst),
-        .input_a  (input_a),
-        .input_b  (input_b),
-        .output_a (output_a),
+        .input_a  (ioread_data),
+        .input_b  (ioread_data),
+        .output_a (led2N4),
         .hsync    (hsync),
         .vsync    (vsync),
         .vga_rgb  (vga_rgb)

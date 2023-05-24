@@ -24,6 +24,7 @@
 
 module Ifetc32 (
         Instruction,
+        rom_adr_o,
         branch_base_addr,
         Addr_result,
         Read_data_1,

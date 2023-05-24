@@ -1,7 +1,7 @@
 set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN T4} [get_ports tx]
 set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN N5} [get_ports rx]
 set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN P17} [get_ports fpga_clk]
-set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN S6} [get_ports fpga_rst]
+set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN P15} [get_ports fpga_rst_in]
 
 
 set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN R1} [get_ports switch2N4_in[0]]
