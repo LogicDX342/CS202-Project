@@ -20,27 +20,47 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module control32(Opcode, Function_opcode, Jr, RegDST, ALUSrc, MemorIOtoReg, RegWrite, MemRead, MemWrite, IORead, IOWrite, Branch, nBranch, Jmp, Jal, I_format, Sftmd, ALUOp, AlU_resultHigh);
-input[5: 0] Opcode;            // À´×ÔIFetchÄ£¿éµÄÖ¸Áî¸ß6bit
-input[5: 0] Function_opcode;  	// À´×ÔIFetchÄ£¿éµÄÖ¸ÁîµÍ6bit£¬ÓÃÓÚÇø·Ör-ÀàĞÍÖĞµÄÖ¸Áî
-output Jr;         	 // Îª1±íÃ÷µ±Ç°Ö¸ÁîÊÇjr£¬Îª0±íÊ¾µ±Ç°Ö¸Áî²»ÊÇjr
-output RegDST;          // Îª1±íÃ÷Ä¿µÄ¼Ä´æÆ÷ÊÇrd£¬Îª0Ê±±íÊ¾Ä¿µÄ¼Ä´æÆ÷ÊÇrt
-output ALUSrc;          // Îª1±íÃ÷µÚ¶ş¸ö²Ù×÷Êı£¨ALUÖĞµÄBinput£©À´×ÔÁ¢¼´Êı£¨beq£¬bne³ıÍâ£©£¬Îª0Ê±±íÊ¾µÚ¶ş¸ö²Ù×÷ÊıÀ´×Ô¼Ä´æÆ÷
-output MemorIOtoReg;     // Îª1±íÃ÷´Ó´æ´¢Æ÷»òI/O¶ÁÈ¡Êı¾İĞ´µ½¼Ä´æÆ÷£¬Îª0Ê±±íÊ¾½«ALUÄ£¿éÊä³öÊı¾İĞ´µ½¼Ä´æÆ÷
-output RegWrite;   	  // Îª1±íÃ÷¸ÃÖ¸ÁîĞèÒªĞ´¼Ä´æÆ÷£¬Îª0Ê±±íÊ¾²»ĞèÒªĞ´¼Ä´æÆ÷
-output MemRead; //1 indicates that the instruction needs to read from the memory
-output MemWrite;       // Îª1±íÃ÷¸ÃÖ¸ÁîĞèÒªĞ´´æ´¢Æ÷£¬Îª0Ê±±íÊ¾²»ĞèÒªĞ´´¢´æÆ÷
-output IORead; // 1 indicates  I/O read
-output IOWrite; // 1 indicates  I/O write
+module control32 (
+         Opcode,
+         Function_opcode,
+         Jr,
+         RegDST,
+         ALUSrc,
+         MemorIOtoReg,
+         RegWrite,
+         MemRead,
+         MemWrite,
+         IORead,
+         IOWrite,
+         Branch,
+         nBranch,
+         Jmp,
+         Jal,
+         I_format,
+         Sftmd,
+         ALUOp,
+         AlU_resultHigh
+       );
+input [5: 0] Opcode;  // æ¥è‡ªIFetchæ¨¡å—çš„æŒ‡ä»¤é«˜6bit
+input [5: 0] Function_opcode;  // æ¥è‡ªIFetchæ¨¡å—çš„æŒ‡ä»¤ä½6bitï¼Œç”¨äºåŒºåˆ†r-ç±»å‹ä¸­çš„æŒ‡ä»¤
+output Jr;  // ä¸º1è¡¨æ˜å½“å‰æŒ‡ä»¤æ˜¯jrï¼Œä¸º0è¡¨ç¤ºå½“å‰æŒ‡ä»¤ä¸æ˜¯jr
+output RegDST;  // ä¸º1è¡¨æ˜ç›®çš„å¯„å­˜å™¨æ˜¯rdï¼Œä¸º0æ—¶è¡¨ç¤ºç›®çš„å¯„å­˜å™¨æ˜¯rt
+output ALUSrc;  // ä¸º1è¡¨æ˜ç¬¬äºŒä¸ªæ“ä½œæ•°ï¼ˆALUä¸­çš„Binputï¼‰æ¥è‡ªç«‹å³æ•°ï¼ˆbeqï¼Œbneé™¤å¤–ï¼‰ï¼Œä¸º0æ—¶è¡¨ç¤ºç¬¬äºŒä¸ªæ“ä½œæ•°æ¥è‡ªå¯„å­˜å™¨
+output MemorIOtoReg;  // ä¸º1è¡¨æ˜ä»å­˜å‚¨å™¨æˆ–I/Oè¯»å–æ•°æ®å†™åˆ°å¯„å­˜å™¨ï¼Œä¸º0æ—¶è¡¨ç¤ºå°†ALUæ¨¡å—è¾“å‡ºæ•°æ®å†™åˆ°å¯„å­˜å™¨
+output RegWrite;  // ä¸º1è¡¨æ˜è¯¥æŒ‡ä»¤éœ€è¦å†™å¯„å­˜å™¨ï¼Œä¸º0æ—¶è¡¨ç¤ºä¸éœ€è¦å†™å¯„å­˜å™¨
+output MemRead;  //1 indicates that the instruction needs to read from the memory
+output MemWrite;  // ä¸º1è¡¨æ˜è¯¥æŒ‡ä»¤éœ€è¦å†™å­˜å‚¨å™¨ï¼Œä¸º0æ—¶è¡¨ç¤ºä¸éœ€è¦å†™å‚¨å­˜å™¨
+output IORead;  // 1 indicates  I/O read
+output IOWrite;  // 1 indicates  I/O write
 
-output Branch;        // Îª1±íÃ÷ÊÇbeqÖ¸Áî£¬Îª0Ê±±íÊ¾²»ÊÇbeqÖ¸Áî
-output nBranch;       // Îª1±íÃ÷ÊÇbneÖ¸Áî£¬Îª0Ê±±íÊ¾²»ÊÇbneÖ¸Áî
-output Jmp;            // Îª1±íÃ÷ÊÇjÖ¸Áî£¬Îª0Ê±±íÊ¾²»ÊÇjÖ¸Áî
-output Jal;            // Îª1±íÃ÷ÊÇjalÖ¸Áî£¬Îª0Ê±±íÊ¾²»ÊÇjalÖ¸Áî
-output I_format;      // Îª1±íÃ÷¸ÃÖ¸ÁîÊÇ³ıbeq£¬bne£¬lw£¬swÖ®ÍâµÄI-ÀàĞÍÖ¸Áî£¬ÆäÓàÇé¿öÎª0
-output Sftmd;         // Îª1±íÃ÷ÊÇÒÆÎ»Ö¸Áî£¬Îª0±íÃ÷²»ÊÇÒÆÎ»Ö¸Áî
-output[1: 0] ALUOp;        // µ±Ö¸ÁîÎªR-type»òI_formatÎª1Ê±£¬ALUOpµÄ¸ß±ÈÌØÎ»Îª1£¬·ñÔò¸ß±ÈÌØÎ»Îª0; µ±Ö¸ÁîÎªbeq»òbneÊ±£¬ALUOpµÄµÍ±ÈÌØÎ»Îª1£¬·ñÔòµÍ±ÈÌØÎ»Îª0
-input[21: 0] AlU_resultHigh;  // From the execution unit Alu_Result[31..10]
+output Branch;  // ä¸º1è¡¨æ˜æ˜¯beqæŒ‡ä»¤ï¼Œä¸º0æ—¶è¡¨ç¤ºä¸æ˜¯beqæŒ‡ä»¤
+output nBranch;  // ä¸º1è¡¨æ˜æ˜¯bneæŒ‡ä»¤ï¼Œä¸º0æ—¶è¡¨ç¤ºä¸æ˜¯bneæŒ‡ä»¤
+output Jmp;  // ä¸º1è¡¨æ˜æ˜¯jæŒ‡ä»¤ï¼Œä¸º0æ—¶è¡¨ç¤ºä¸æ˜¯jæŒ‡ä»¤
+output Jal;  // ä¸º1è¡¨æ˜æ˜¯jalæŒ‡ä»¤ï¼Œä¸º0æ—¶è¡¨ç¤ºä¸æ˜¯jalæŒ‡ä»¤
+output I_format;  // ä¸º1è¡¨æ˜è¯¥æŒ‡ä»¤æ˜¯é™¤beqï¼Œbneï¼Œlwï¼Œswä¹‹å¤–çš„I-ç±»å‹æŒ‡ä»¤ï¼Œå…¶ä½™æƒ…å†µä¸º0
+output Sftmd;  // ä¸º1è¡¨æ˜æ˜¯ç§»ä½æŒ‡ä»¤ï¼Œä¸º0è¡¨æ˜ä¸æ˜¯ç§»ä½æŒ‡ä»¤
+output [1: 0] ALUOp;  // å½“æŒ‡ä»¤ä¸ºR-typeæˆ–I_formatä¸º1æ—¶ï¼ŒALUOpçš„é«˜æ¯”ç‰¹ä½ä¸º1ï¼Œå¦åˆ™é«˜æ¯”ç‰¹ä½ä¸º0; å½“æŒ‡ä»¤ä¸ºbeqæˆ–bneæ—¶ï¼ŒALUOpçš„ä½æ¯”ç‰¹ä½ä¸º1ï¼Œå¦åˆ™ä½æ¯”ç‰¹ä½ä¸º0
+input [21: 0] AlU_resultHigh;  // From the execution unit Alu_Result[31..10]
 
 wire R_format;
 wire Lw;
@@ -55,16 +75,19 @@ assign RegDST = R_format;
 assign ALUSrc = (I_format || Lw || Sw);
 assign MemorIOtoReg = IORead || MemRead;
 assign RegWrite = (R_format || Lw || Jal || I_format) && !(Jr);
-assign MemWrite = ((Sw==1) && (AlU_resultHigh[21:0] != 22'h3FFFFF)) ? 1'b1:1'b0; 
-assign MemRead =((Lw==1) && (AlU_resultHigh[21:0] != 22'h3FFFFF)) ? 1'b1:1'b0;
-assign IORead=((Lw==1) && (AlU_resultHigh[21:0] == 22'h3FFFFF)) ? 1'b1:1'b0;
-assign IOWrite= ((Sw==1) && (AlU_resultHigh[21:0] == 22'h3FFFFF)) ? 1'b1:1'b0; 
+assign MemWrite = ((Sw == 1) && (AlU_resultHigh[21: 0] != 22'h3FFFFF)) ? 1'b1 : 1'b0;
+assign MemRead = ((Lw == 1) && (AlU_resultHigh[21: 0] != 22'h3FFFFF)) ? 1'b1 : 1'b0;
+assign IORead = ((Lw == 1) && (AlU_resultHigh[21: 0] == 22'h3FFFFF)) ? 1'b1 : 1'b0;
+assign IOWrite = ((Sw == 1) && (AlU_resultHigh[21: 0] == 22'h3FFFFF)) ? 1'b1 : 1'b0;
 assign Branch = (Opcode == 6'b000100) ? 1'b1 : 1'b0;
 assign nBranch = (Opcode == 6'b000101) ? 1'b1 : 1'b0;
 assign Jmp = (Opcode == 6'b000010) ? 1'b1 : 1'b0;
 assign Jal = (Opcode == 6'b000011) ? 1'b1 : 1'b0;
 assign I_format = (Opcode[5: 3] == 3'b001) ? 1'b1 : 1'b0;
-assign Sftmd = (((Function_opcode == 6'b000000) || (Function_opcode == 6'b000010) || (Function_opcode == 6'b000011) || (Function_opcode == 6'b000100) || (Function_opcode == 6'b000110) || (Function_opcode == 6'b000111)) && R_format) ? 1'b1 : 1'b0;
-assign ALUOp = { (R_format || I_format) , (Branch || nBranch) };
+assign Sftmd = (((Function_opcode == 6'b000000) || (Function_opcode == 6'b000010) ||
+                 (Function_opcode == 6'b000011) || (Function_opcode == 6'b000100) ||
+                 (Function_opcode == 6'b000110) || (Function_opcode == 6'b000111)) &&
+                R_format) ? 1'b1 : 1'b0;
+assign ALUOp = {(R_format || I_format), (Branch || nBranch)};
 
 endmodule

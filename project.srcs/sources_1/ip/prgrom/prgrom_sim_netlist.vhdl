@@ -1,7 +1,7 @@
 -- Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2017.4 (win64) Build 2086221 Fri Dec 15 20:55:39 MST 2017
--- Date        : Sun May 21 17:21:25 2023
+-- Date        : Thu May 25 16:28:07 2023
 -- Host        : LAPTOP-1AGHRQQS running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode funcsim
 --               D:/AAAA/study/CS202jizu/project/project.srcs/sources_1/ip/prgrom/prgrom_sim_netlist.vhdl
@@ -5359,7 +5359,7 @@ entity prgrom_blk_mem_gen_v8_4_1 is
   attribute C_USE_BYTE_WEB : integer;
   attribute C_USE_BYTE_WEB of prgrom_blk_mem_gen_v8_4_1 : entity is 0;
   attribute C_USE_DEFAULT_DATA : integer;
-  attribute C_USE_DEFAULT_DATA of prgrom_blk_mem_gen_v8_4_1 : entity is 1;
+  attribute C_USE_DEFAULT_DATA of prgrom_blk_mem_gen_v8_4_1 : entity is 0;
   attribute C_USE_ECC : integer;
   attribute C_USE_ECC of prgrom_blk_mem_gen_v8_4_1 : entity is 0;
   attribute C_USE_SOFTECC : integer;
@@ -5686,7 +5686,7 @@ architecture STRUCTURE of prgrom is
   attribute C_USE_BYTE_WEB : integer;
   attribute C_USE_BYTE_WEB of U0 : label is 0;
   attribute C_USE_DEFAULT_DATA : integer;
-  attribute C_USE_DEFAULT_DATA of U0 : label is 1;
+  attribute C_USE_DEFAULT_DATA of U0 : label is 0;
   attribute C_USE_ECC : integer;
   attribute C_USE_ECC of U0 : label is 0;
   attribute C_USE_SOFTECC : integer;

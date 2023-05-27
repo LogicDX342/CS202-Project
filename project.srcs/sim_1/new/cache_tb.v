@@ -19,70 +19,50 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
-module x_core_info_tb;
+module Ifetc32_tb;
 
     // Parameters
 
     // Ports
-    reg clka = 0;
-    reg  wea = 0;
-    reg [13:0] addra = 0;
-    reg [31:0] dina = 0;
-    wire [31:0] douta;
+    wire [31:0] Instruction;
+    wire [31:0] branch_base_addr;
+    wire [31:0] link_addr;
+    reg [31:0] Addr_result;
+    reg [31:0] Read_data_1;
+    reg Branch = 0;
+    reg nBranch = 0;
+    reg Jmp = 0;
+    reg Jal = 0;
+    reg Jr = 0;
+    reg Zero = 0;
+    reg clock = 0;
+    reg reset = 0;
 
-    RAM x_core_info_dut (
-        .clka (clka),
-        .wea  (wea),
-        .addra(addra),
-        .dina (dina),
-        .douta(douta)
+    Ifetc32 Ifetc32_dut (
+        .Instruction     (Instruction),
+        .branch_base_addr(branch_base_addr),
+        .link_addr       (link_addr),
+        .Addr_result     (Addr_result),
+        .Read_data_1     (Read_data_1),
+        .Branch          (Branch),
+        .nBranch         (nBranch),
+        .Jmp             (Jmp),
+        .Jal             (Jal),
+        .Jr              (Jr),
+        .Zero            (Zero),
+        .clock           (clock),
+        .reset           (reset)
     );
 
-    // initial begin
-    //   begin
-    //     #4
-    //     addra = 14'h0000;
-    //     dina = 32'h00000011;
-    //     wea = 0;
-    //     #10;
-    //     addra = 14'h0001;
-    //     dina = 32'h00000f01;
-    //     wea = 1;
-    //     #10;
-    //     addra = 14'h0002;
-    //     dina = 32'h00000000;
-    //     wea = 0;
-    //     #10;
-    //     addra = 14'h0001;
-    //     dina = 32'h00000000;
-    //     wea = 0;
-    //     #10;
-    //     $finish;
-    //   end
-    // end
-    always @(posedge clka) begin
-        dina <= dina + 1'b1;
-    end
-    always @(posedge clka) begin
-        addra <= addra + 1'b1;
-    end
-
-    always #5 clka = !clka;
-
     initial begin
-        wea = 1'b0;
-        #14
-        wea = 1'b1;
-        #9
-        wea = 1'b0;
-        #11
-        wea = 1'b1;
-        #9
-        wea = 1'b0;
-        #11
-         $finish;
+        begin
+            reset = 1;
+            #10
+            reset = 0;
+            #50 $finish;
+        end
     end
+
+    always #5 clock = !clock;
 
 endmodule
-

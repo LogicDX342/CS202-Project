@@ -1,10 +1,10 @@
 -- Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2017.4 (win64) Build 2086221 Fri Dec 15 20:55:39 MST 2017
--- Date        : Fri May 19 21:10:22 2023
--- Host        : DESKTOP-AFM7LO6 running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim {i:/Computer
---               Organization/project/project.srcs/sources_1/ip/uart_bmpg_0/uart_bmpg_0_sim_netlist.vhdl}
+-- Date        : Thu May 25 15:18:55 2023
+-- Host        : LAPTOP-1AGHRQQS running 64-bit major release  (build 9200)
+-- Command     : write_vhdl -force -mode funcsim
+--               D:/AAAA/study/CS202jizu/project/project.srcs/sources_1/ip/uart_bmpg_0/uart_bmpg_0_sim_netlist.vhdl
 -- Design      : uart_bmpg_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
