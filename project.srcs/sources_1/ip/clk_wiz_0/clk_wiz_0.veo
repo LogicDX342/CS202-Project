@@ -1,5 +1,4 @@
 
-// file: cpuclk.v
 // 
 // (c) Copyright 2008 - 2013 Xilinx, Inc. All rights reserved.
 // 
@@ -56,34 +55,26 @@
 //  Output     Output      Phase    Duty Cycle   Pk-to-Pk     Phase
 //   Clock     Freq (MHz)  (degrees)    (%)     Jitter (ps)  Error (ps)
 //----------------------------------------------------------------------------
-// clk_out1____23.000______0.000______50.0______342.117____303.235
-// clk_out2____10.000______0.000______50.0______391.228____303.235
+// clk_out1____25.000______0.000______50.0______352.369____261.747
 //
 //----------------------------------------------------------------------------
 // Input Clock   Freq (MHz)    Input Jitter (UI)
 //----------------------------------------------------------------------------
 // __primary_________100.000____________0.010
 
-`timescale 1ps/1ps
+// The following must be inserted into your Verilog file for this
+// core to be instantiated. Change the instance name and port connections
+// (in parentheses) to your own signal names.
 
-(* CORE_GENERATION_INFO = "cpuclk,clk_wiz_v5_4_3_0,{component_name=cpuclk,use_phase_alignment=true,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_AUTO,PRIMITIVE=PLL,num_out_clk=2,clkin1_period=10.000,clkin2_period=10.000,use_power_down=false,use_reset=false,use_locked=false,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}" *)
+//----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
 
-module cpuclk 
- (
-  // Clock out ports
-  output        clk_out1,
-  output        clk_out2,
- // Clock in ports
-  input         clk_in1
- );
-
-  cpuclk_clk_wiz inst
-  (
-  // Clock out ports  
-  .clk_out1(clk_out1),
-  .clk_out2(clk_out2),
- // Clock in ports
-  .clk_in1(clk_in1)
-  );
-
-endmodule
+  clk_wiz_0 instance_name
+   (
+    // Clock out ports
+    .clk_out1(clk_out1),     // output clk_out1
+    // Status and control signals
+    .reset(reset), // input reset
+    .locked(locked),       // output locked
+   // Clock in ports
+    .clk_in1(clk_in1));      // input clk_in1
+// INST_TAG_END ------ End INSTANTIATION Template ---------

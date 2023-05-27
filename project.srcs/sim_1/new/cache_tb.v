@@ -18,51 +18,76 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
-module Ifetc32_tb;
+module cache_tb;
 
     // Parameters
+    localparam A_WIDTH = 16;
+    localparam C_INDEX = 6;
+    localparam D_WIDTH = 32;
 
     // Ports
-    wire [31:0] Instruction;
-    wire [31:0] branch_base_addr;
-    wire [31:0] link_addr;
-    reg [31:0] Addr_result;
-    reg [31:0] Read_data_1;
-    reg Branch = 0;
-    reg nBranch = 0;
-    reg Jmp = 0;
-    reg Jal = 0;
-    reg Jr = 0;
-    reg Zero = 0;
-    reg clock = 0;
-    reg reset = 0;
+    reg clk = 0;
+    reg rst_n = 0;
+    reg [A_WIDTH-1:0] p_a;
+    reg [D_WIDTH-1:0] p_dout;
+    wire [D_WIDTH-1:0] p_din;
+    reg p_strobe = 0;
+    reg p_rw = 0;
+    wire p_ready;
+    wire [A_WIDTH-1:0] m_a;
+    reg [D_WIDTH-1:0] m_dout;
+    wire [D_WIDTH-1:0] m_din;
+    wire m_strobe;
+    wire m_rw;
+    reg m_ready = 1;
 
-    Ifetc32 Ifetc32_dut (
-        .Instruction     (Instruction),
-        .branch_base_addr(branch_base_addr),
-        .link_addr       (link_addr),
-        .Addr_result     (Addr_result),
-        .Read_data_1     (Read_data_1),
-        .Branch          (Branch),
-        .nBranch         (nBranch),
-        .Jmp             (Jmp),
-        .Jal             (Jal),
-        .Jr              (Jr),
-        .Zero            (Zero),
-        .clock           (clock),
-        .reset           (reset)
+    cache cache_dut (
+        .clk     (clk),
+        .rst_n   (rst_n),
+        .p_a     (p_a),
+        .p_dout  (p_dout),
+        .p_din   (p_din),
+        .p_strobe(p_strobe),
+        .p_rw    (p_rw),
+        .p_ready (p_ready),
+        .m_a     (m_a),
+        .m_dout  (m_dout),
+        .m_din   (m_din),
+        .m_strobe(m_strobe),
+        .m_rw    (m_rw),
+        .m_ready (m_ready)
     );
 
     initial begin
         begin
-            reset = 1;
-            #10
-            reset = 0;
-            #50 $finish;
+            rst_n = 0;
+            #10;
+            rst_n = 1;
+            p_a= 4'b1111;
+            p_dout= 4'b1010;
+            p_strobe= 1;
+            p_rw= 0;
+            m_dout=4'b1100;
+            #10;
+            p_strobe= 0;
+            #10;
+            p_strobe= 1;
+            p_rw= 1;
+            p_a=4'b0;
+            p_dout=4'b1111;
+            #10;
+            p_strobe= 1;
+            p_rw= 0;
+            p_a=4'b0;
+            m_dout=4'b0;
+            #10;
+            p_a=4'b1111;
+            #10;
+            $finish;
+
         end
     end
 
-    always #5 clock = !clock;
+    always #1 clk = !clk;
 
 endmodule

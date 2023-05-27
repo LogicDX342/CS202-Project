@@ -21,7 +21,7 @@
 
 
 module vga_colorbar (
-    input       vga_clk,    //25MHz
+    input       sys_clk,    //25MHz
     input       sys_rst_n,
     input [7:0] input_a,
     input [7:0] input_b,
@@ -42,6 +42,15 @@ module vga_colorbar (
 
     assign rst_n = (sys_rst_n && locked);
 
+    clk_wiz_0 clk_wiz_inst (
+        // Clock out ports  
+        .clk_out1(vga_clk),
+        // Status and control signals               
+        .reset   (~sys_rst_n),
+        .locked  (locked),
+        // Clock in ports
+        .clk_in1 (sys_clk)
+    );
 
     vga_ctrl vga_ctrl_inst (
         .vga_clk  (vga_clk),

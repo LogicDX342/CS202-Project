@@ -21,13 +21,13 @@
 
 
 module Debounce (
-        clk,
+        clock,
         rst_n,
         key_in,
         key_out
     );
     parameter key_num = 4'd11;
-    input clk;
+    input clock;
     input rst_n;
     input [key_num-1:0] key_in;
     output reg [key_num-1:0] key_out = 11'b0;
@@ -38,7 +38,7 @@ module Debounce (
     reg [7:0] cnt = 8'b0;
     wire [key_num-1:0] key_edge;
 
-    always @(posedge clk)
+    always @(posedge clock)
     begin
         if (~rst_n)
         begin
@@ -53,7 +53,7 @@ module Debounce (
     end
     assign key_edge = (key_cur & ~key_pre) | (~key_cur & key_pre);
 
-    always @(posedge clk)
+    always @(posedge clock)
     begin
         if (~rst_n)
         begin
@@ -69,7 +69,7 @@ module Debounce (
         end
     end
 
-    always @(posedge clk)
+    always @(posedge clock)
     begin
         if (~rst_n)
         begin

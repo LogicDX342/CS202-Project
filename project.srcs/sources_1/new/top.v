@@ -36,24 +36,14 @@ module CPU_TOP (
 );
     wire clk;
     wire rst;
-
     // UART Programmer Pinouts
     wire upg_clk;
-    wire upg_wen;  //Uart write out enable
-    wire upg_done;  //Uart rx data have done
-    //data to which memory unit of program_rom/dmemory32
-    wire [14:0] upg_adr;
-    //data to program_rom or dmemory32
-    wire [31:0] upg_dat;
-
     wire vga_clk;
     cpuclk clock (
         .clk_in1 (fpga_clk),
         .clk_out1(clk),
-        .clk_out2(upg_clk),
-        .clk_out3(vga_clk)
+        .clk_out2(upg_clk)
     );
-
     wire [15:0] switch2N4;
     wire fpga_rst;
     wire start_pg;
@@ -61,19 +51,25 @@ module CPU_TOP (
     Debounce #(
         .key_num(10'd18)
     ) debounce_dut (
-        .clk    (clk),
+        .clock  (clk),
         .rst_n  (1'b1),
         .key_in ({fpga_rst_in, switch2N4_in, start_pg_in}),
         .key_out({fpga_rst, switch2N4, start_pg})
     );
 
 
-    reg spg_bufg = 0;
-    always @(start_pg) begin
-        if (fpga_rst) spg_bufg <= 0;
-        else spg_bufg <= ~spg_bufg;
-    end
+    wire spg_bufg;
+    BUFG U1 (
+        .I(start_pg),
+        .O(spg_bufg)
+    );
 
+    wire upg_wen;  //Uart write out enable
+    wire upg_done;  //Uart rx data have done
+    //data to which memory unit of program_rom/dmemory32
+    wire [14:0] upg_adr;
+    //data to program_rom or dmemory32
+    wire [31:0] upg_dat;
     // Generate UART Programmer reset signal
     reg upg_rst;
     always @(posedge fpga_clk) begin
@@ -83,11 +79,12 @@ module CPU_TOP (
     //used for other modules which don't relateto UART wire rst;
     assign rst = fpga_rst | !upg_rst;
 
+    wire upg_clk_o;
     uart_bmpg_0 uart (
-        .upg_clk_i (upg_clk),   // 10MHz
-        .upg_rst_i (upg_rst),   // High active
+        .upg_clk_i (upg_clk),    // 10MHz
+        .upg_rst_i (upg_rst),    // High active
         // blkram signals
-        .upg_clk_o (),
+        .upg_clk_o (upg_clk_o),
         .upg_wen_o (upg_wen),
         .upg_adr_o (upg_adr),
         .upg_dat_o (upg_dat),
@@ -97,34 +94,8 @@ module CPU_TOP (
         .upg_tx_o  (tx)
     );
 
-    wire [31:0] Read_data_1;
-    wire [31:0] Read_data_2;
-    wire [31:0] Sign_extend;
-    wire [5:0] Function_opcode;
-    wire [5:0] Exe_opcode;
-    wire [1:0] ALUOp;
-    wire [31:0] PC_plus_4;
-    wire Sftmd;
-    wire ALUSrc;
-    wire I_format;
-    wire Jr;
-    wire Jmp;
-    wire Jal;
-    wire Zero;
-    wire RegDst;
-    wire Branch;
-    wire nBranch;
-    wire MemorIOtoReg;
-    wire RegWrite;
-    wire MemRead;
-    wire MemWrite;
-    wire [31:0] ALU_Result;
-    wire [31:0] Addr_Result;
-    wire [31:0] Instruction;
     wire [15:0] rom_adr;
-    wire [31:0] branch_base_addr;
-    wire [31:0] link_addr;
-
+    wire [31:0] Instruction;
 
     programrom programrom_dut (
         .rom_clk_i    (clk),
@@ -137,6 +108,17 @@ module CPU_TOP (
         .upg_dat_i    (upg_dat),
         .upg_done_i   (upg_done)
     );
+    wire [31:0] branch_base_addr;
+    wire [31:0] link_addr;
+    wire [31:0] Addr_Result;
+    wire [31:0] Read_data_1;
+    wire [31:0] Read_data_2;
+    wire Branch;
+    wire nBranch;
+    wire Jmp;
+    wire Jal;
+    wire Jr;
+    wire Zero;
 
     Ifetc32 Ifetc32_dut (
         .Instruction     (Instruction),
@@ -156,6 +138,11 @@ module CPU_TOP (
     );
 
     wire [31:0] mem_data;
+    wire [31:0] ALU_Result;
+    wire RegWrite;
+    wire MemorIOtoReg;
+    wire RegDst;
+    wire [31:0] Sign_extend;
 
     decode32 decode32_dut (
         .clock      (clk),
@@ -173,8 +160,14 @@ module CPU_TOP (
         .read_data_2(Read_data_2)
     );
 
+    wire ALUSrc;
+    wire MemRead;
+    wire MemWrite;
     wire IORead;
     wire IOWrite;
+    wire I_format;
+    wire Sftmd;
+    wire [1:0] ALUOp;
 
     control32 control32_dut (
         .Opcode         (Instruction[31:26]),
@@ -235,10 +228,7 @@ module CPU_TOP (
         .upg_done_i(upg_done)
     );
 
-
-
-    wire [15:0] ioread_data;
-
+    wire [31:0] ioread_data;
     wire LEDCtrl;
     wire SwitchCtrl;
 
@@ -276,15 +266,16 @@ module CPU_TOP (
     );
 
 
-    vga_colorbar vga_colorbar_dut (
-        .vga_clk  (vga_clk),
-        .sys_rst_n(~rst),
-        .input_a  (ioread_data),
-        .input_b  (ioread_data),
-        .output_a (led2N4),
-        .hsync    (hsync),
-        .vsync    (vsync),
-        .vga_rgb  (vga_rgb)
-    );
+    // vga_colorbar vga_colorbar_dut (
+    //     .sys_clk  (fpga_clk),
+    //     .sys_rst_n(~rst),
+    //     .input_a  (ioread_data[7:0]),
+    //     .input_b  (ioread_data[7:0]),
+    //     .output_a (led2N4[7:0]),
+    //     .hsync    (hsync),
+    //     .vsync    (vsync),
+    //     .vga_rgb  (vga_rgb)
+    // );
+
 
 endmodule
