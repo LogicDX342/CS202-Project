@@ -36,9 +36,9 @@ module dmemory32 (
         input upg_done_i // 1 if programming is finished
     );
 
-    wire ram_clk = !ram_clk_i;
+    wire ram_clk = ~ram_clk_i;
     /* CPU work on normal mode when kickOff is 1. CPU work on Uart communicate mode when kickOff is 0.*/
-    wire kickOff = upg_rst_i | (~upg_rst_i & upg_done_i);
+    wire kickOff = ~upg_rst_i | (upg_rst_i & upg_done_i);
 
     wire [15:0] m_a;
     wire [31:0] m_dout;

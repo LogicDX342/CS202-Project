@@ -21,29 +21,28 @@
 
 
 module control32 (
-    Opcode,
-    Function_opcode,
-    Jr,
-    RegDST,
-    ALUSrc,
-    MemorIOtoReg,
-    RegWrite,
-    MemRead,
-    MemWrite,
-    IORead,
-    IOWrite,
-    Branch,
-    nBranch,
-    Jmp,
-    Jal,
-    I_format,
-    Sftmd,
-    ALUOp,
-    AlU_resultHigh
-);
+        Opcode,
+        Function_opcode,
+        Jr,
+        RegDST,
+        ALUSrc,
+        MemorIOtoReg,
+        RegWrite,
+        MemRead,
+        MemWrite,
+        IORead,
+        IOWrite,
+        Branch,
+        nBranch,
+        Jmp,
+        Jal,
+        I_format,
+        Sftmd,
+        ALUOp,
+        AlU_resultHigh
+    );
     input [5:0] Opcode;  // 来自IFetch模块的指令高6bit
-    input [5:0]
-        Function_opcode;  // 来自IFetch模块的指令低6bit，用于区分r-类型中的指令
+    input [5:0] Function_opcode;  // 来自IFetch模块的指令低6bit，用于区分r-类型中的指令
     output Jr;  // 为1表明当前指令是jr，为0表示当前指令不是jr
     output RegDST;  // 为1表明目的寄存器是rd，为0时表示目的寄存器是rt
     output ALUSrc;  // 为1表明第二个操作数（ALU中的Binput）来自立即数（beq，bne除外），为0时表示第二个操作数来自寄存器
@@ -87,8 +86,7 @@ module control32 (
     assign I_format = (Opcode[5:3] == 3'b001) ? 1'b1 : 1'b0;
     assign Sftmd = (((Function_opcode == 6'b000000) || (Function_opcode == 6'b000010) ||
                      (Function_opcode == 6'b000011) || (Function_opcode == 6'b000100) ||
-                     (Function_opcode == 6'b000110) || (Function_opcode == 6'b000111)) &&
-                    R_format) ? 1'b1 : 1'b0;
+                     (Function_opcode == 6'b000110) || (Function_opcode == 6'b000111)) && R_format) ? 1'b1 : 1'b0;
     assign ALUOp = {(R_format || I_format), (Branch || nBranch)};
 
 endmodule

@@ -51,7 +51,8 @@ module Ifetc32 (
     input Jal;  // while Jal is 1, it means current instruction is jal
     input Jr;  // while Jr is 1, it means current instruction is jr
     input Zero;  // while Zero is 1, it means the ALUresult is zero
-    input clock, reset;  // Clock and reset (Synchronous reset signal, high level is effective, when reset=1, PC value is 0)
+    input clock,
+          reset;  // Clock and reset (Synchronous reset signal, high level is effective, when reset=1, PC value is 0)
 
     reg [31:0] pc, next_pc;
 
@@ -74,9 +75,9 @@ module Ifetc32 (
         end
     end
 
-    always @(negedge clock)
+    always @(posedge clock)
     begin
-        if (reset == 1'b1)
+        if (~reset)
         begin
             pc <= 32'h0000_0000;
         end
@@ -90,7 +91,7 @@ module Ifetc32 (
             else
             begin
                 link_addr <= 32'h0000_0000;
-                pc <= next_pc;
+                pc        <= next_pc;
             end
         end
     end

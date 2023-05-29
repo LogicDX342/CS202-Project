@@ -32,7 +32,9 @@ module CPU_TOP_tb;
     begin
       #1000
       fpga_rst_in = 0;
-      #400
+      #1000
+      fpga_rst_in = 1;
+      #100
       // start_pg_in=1;
       // #100
       // start_pg_in=0;
@@ -46,11 +48,11 @@ module CPU_TOP_tb;
 
       switch2N4_in=16'b0000_0010_0000_0001;
       #1000
-      switch2N4_in=16'b0000_0010_0000_0000;
+      switch2N4_in=16'b0000_0000_0011_0000;
       #1000
-      switch2N4_in=16'b0000_0010_0000_0001;
+      switch2N4_in=16'b0000_0000_0011_0001;
       #1000
-      switch2N4_in=16'b0000_0010_0000_0000;
+      switch2N4_in=16'b0000_0000_0011_0000;
       #5000
 
       switch2N4_in=16'b0000_0010_0000_0011;

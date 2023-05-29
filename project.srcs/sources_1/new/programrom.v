@@ -41,7 +41,7 @@ module programrom (
     /* if  kickOff is 1 means  CPU work on normal mode,
     otherwise CPU work on Uart communication mode */
     wire rom_clk = !rom_clk_i;
-    wire kickOff = upg_rst_i | (~upg_rst_i & upg_done_i);
+    wire kickOff = !upg_rst_i | (upg_rst_i & upg_done_i);
     prgrom instmem (
                .clka (kickOff ? rom_clk : upg_clk_i),
                .wea  (kickOff ? 1'b0 : upg_wen_i),
@@ -52,18 +52,18 @@ module programrom (
 
     cache i_cache_dut (
               .clk     (rom_clk),
-               .rst_n   (rom_rst_i),
+              .rst_n   (~rom_rst_i),
               .p_a     (rom_adr_i),
-            //   .p_dout  (),
+              //   .p_dout  (),
               .p_din   (Instruction_o),
               .p_strobe(1'b1),
               .p_rw    (1'b0),
-            //    .p_ready (),
+              //    .p_ready (),
               .m_a     (m_a),
               .m_dout  (m_dout),
-            //    .m_din   (),
-            //    .m_strobe(),
-            //    .m_rw    (),
+              //    .m_din   (),
+              //    .m_strobe(),
+              //    .m_rw    (),
               .m_ready (1'b1)
           );
 endmodule

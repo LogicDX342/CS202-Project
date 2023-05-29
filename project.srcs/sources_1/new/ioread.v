@@ -11,7 +11,7 @@ module ioread (
 
     always @*
     begin
-        if (reset)
+        if (~reset)
             ioread_data = 16'h0;
         else if (ior == 1)
         begin

@@ -22,6 +22,9 @@ set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN V2} [get_ports switch2N4_in[
 set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN U2} [get_ports switch2N4_in[14]]
 set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN U3} [get_ports switch2N4_in[15]]
 
+set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN R17} [get_ports btn_in]
+
+
 set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN K3} [get_ports led2N4[0]]
 set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN M1} [get_ports led2N4[1]]
 set_property -dict {IOSTANDARD LVCMOS33 PACKAGE_PIN L1} [get_ports led2N4[2]]

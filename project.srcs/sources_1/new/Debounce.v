@@ -59,7 +59,7 @@ module Debounce (
         begin
             cnt <= 8'b0;
         end
-        else if (cnt == 8'd9)
+        else if (cnt == 32'd1)
         begin
             cnt <= 8'b0;
         end
@@ -75,7 +75,7 @@ module Debounce (
         begin
             key_out <= 12'b0;
         end
-        else if (cnt == 8'd9)
+        else if (cnt == 1'b0)
         begin
             key_out <= key_in;
         end

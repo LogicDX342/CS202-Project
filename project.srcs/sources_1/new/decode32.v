@@ -140,7 +140,7 @@ module decode32 (
     integer count;
     always @(posedge clock)
     begin
-        if (reset == 1'b1)
+        if (~reset)
         begin
             for (count = 0; count < 32; count = count + 1)
                 register[count] <= 0;

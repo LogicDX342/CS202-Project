@@ -24,6 +24,7 @@ module CPU_TOP (
     input         fpga_rst_in,   //Active High
     input         fpga_clk,
     input  [15:0] switch2N4_in,
+    input         btn_in,
     output [15:0] led2N4,
     // UART Programmer Pinouts
     // start Uart communicate at high level
@@ -46,14 +47,15 @@ module CPU_TOP (
     wire [15:0] switch2N4;
     wire fpga_rst;
     wire start_pg;
+    wire btn;
 
     Debounce #(
-        .key_num(10'd18)
+        .key_num(10'd19)
     ) debounce_dut (
         .clock  (clk),
         .rst_n  (1'b1),
-        .key_in ({fpga_rst_in, switch2N4_in, start_pg_in}),
-        .key_out({fpga_rst, switch2N4, start_pg})
+        .key_in ({fpga_rst_in, switch2N4_in, btn_in, start_pg_in}),
+        .key_out({fpga_rst, switch2N4, start_pg, btn})
     );
 
 
@@ -70,18 +72,18 @@ module CPU_TOP (
     //data to program_rom or dmemory32
     wire [31:0] upg_dat;
     // Generate UART Programmer reset signal
-    reg upg_rst;
+    reg upg_rst = 0;
     always @(posedge fpga_clk) begin
-        if (spg_bufg) upg_rst = 0;
-        if (fpga_rst) upg_rst = 1;
+        if (spg_bufg) upg_rst = 1;
+        if (fpga_rst) upg_rst = 0;
     end
     //used for other modules which don't relateto UART wire rst;
-    assign rst = fpga_rst | !upg_rst;
+    assign rst = fpga_rst | upg_rst;
 
     wire upg_clk_o;
     uart_bmpg_0 uart (
         .upg_clk_i (upg_clk),    // 10MHz
-        .upg_rst_i (upg_rst),    // High active
+        .upg_rst_i (~upg_rst),   // High active
         // blkram signals
         .upg_clk_o (upg_clk_o),
         .upg_wen_o (upg_wen),
@@ -176,9 +178,12 @@ module CPU_TOP (
     wire Sftmd;
     wire [1:0] ALUOp;
 
+    wire [5:0] Exe_opcode = Instruction[31:26];
+    wire [5:0] Function_opcode = Instruction[5:0];
+
     control32 control32_dut (
-        .Opcode         (Instruction[31:26]),
-        .Function_opcode(Instruction[5:0]),
+        .Opcode         (Exe_opcode),
+        .Function_opcode(Function_opcode),
         .Jr             (Jr),
         .RegDST         (RegDst),
         .ALUSrc         (ALUSrc),
@@ -203,8 +208,8 @@ module CPU_TOP (
         .Read_data_1    (Read_data_1),
         .Read_data_2    (Read_data_2),
         .Sign_extend    (Sign_extend),
-        .Function_opcode(Instruction[5:0]),
-        .Exe_opcode     (Instruction[31:26]),
+        .Function_opcode(Function_opcode),
+        .Exe_opcode     (Exe_opcode),
         .ALUOp          (ALUOp),
         .Shamt          (Instruction[10:6]),
         .PC_plus_4      (branch_base_addr),
@@ -236,7 +241,7 @@ module CPU_TOP (
         .upg_done_i(upg_done)
     );
 
-    wire [31:0] ioread_data;
+    wire [15:0] ioread_data;
     wire LEDCtrl;
     wire SwitchCtrl;
 
@@ -269,7 +274,7 @@ module CPU_TOP (
         .reset             (rst),
         .ior               (IORead),
         .switchctrl        (SwitchCtrl),
-        .ioread_data_switch(switch2N4),
+        .ioread_data_switch({switch2N4[15:2], btn}),
         .ioread_data       (ioread_data)
     );
 
