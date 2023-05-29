@@ -22,6 +22,7 @@
 
 module programrom (
         // Program ROM Pinouts
+        input		 rom_rst_i,      // Reset (Active High)
         input         rom_clk_i,      // ROM clock
         input  [15:0] rom_adr_i,      // From IFetch
         output [31:0] Instruction_o,  // To IFetch
@@ -51,7 +52,7 @@ module programrom (
 
     cache i_cache_dut (
               .clk     (rom_clk),
-               .rst_n   (1'b0),
+               .rst_n   (rom_rst_i),
               .p_a     (rom_adr_i),
             //   .p_dout  (),
               .p_din   (Instruction_o),

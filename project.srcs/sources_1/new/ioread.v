@@ -20,6 +20,10 @@ module ioread (
             else
                 ioread_data = ioread_data;
         end
+        else
+        begin
+            ioread_data = ioread_data;
+        end
     end
 
 endmodule

@@ -76,10 +76,10 @@ module control32 (
     assign ALUSrc = (I_format || Lw || Sw);
     assign MemorIOtoReg = IORead || MemRead;
     assign RegWrite = (R_format || Lw || Jal || I_format) && !(Jr);
-    assign MemWrite = ((Sw == 1) && (AlU_resultHigh[21:0] != 22'h3FFFFF)) ? 1'b1 : 1'b0;
-    assign MemRead = ((Lw == 1) && (AlU_resultHigh[21:0] != 22'h3FFFFF)) ? 1'b1 : 1'b0;
-    assign IORead = ((Lw == 1) && (AlU_resultHigh[21:0] == 22'h3FFFFF)) ? 1'b1 : 1'b0;
-    assign IOWrite = ((Sw == 1) && (AlU_resultHigh[21:0] == 22'h3FFFFF)) ? 1'b1 : 1'b0;
+    assign MemWrite = ((Sw == 1) && (AlU_resultHigh[21:0] != 22'h0FFFFF)) ? 1'b1 : 1'b0;
+    assign MemRead = ((Lw == 1) && (AlU_resultHigh[21:0] != 22'h0FFFFF)) ? 1'b1 : 1'b0;
+    assign IORead = ((Lw == 1) && (AlU_resultHigh[21:0] == 22'h0FFFFF)) ? 1'b1 : 1'b0;
+    assign IOWrite = ((Sw == 1) && (AlU_resultHigh[21:0] == 22'h0FFFFF)) ? 1'b1 : 1'b0;
     assign Branch = (Opcode == 6'b000100) ? 1'b1 : 1'b0;
     assign nBranch = (Opcode == 6'b000101) ? 1'b1 : 1'b0;
     assign Jmp = (Opcode == 6'b000010) ? 1'b1 : 1'b0;

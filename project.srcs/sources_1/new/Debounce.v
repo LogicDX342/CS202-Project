@@ -57,15 +57,15 @@ module Debounce (
     begin
         if (~rst_n)
         begin
-            cnt = 8'b0;
+            cnt <= 8'b0;
         end
-        else if (key_edge || cnt == 8'd10)
+        else if (cnt == 8'd9)
         begin
-            cnt = 8'b0;
+            cnt <= 8'b0;
         end
         else
         begin
-            cnt = cnt + 1'b1;
+            cnt <= cnt + 8'b1;
         end
     end
 

@@ -1,7 +1,7 @@
 // Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2017.4 (win64) Build 2086221 Fri Dec 15 20:55:39 MST 2017
-// Date        : Wed May 24 17:49:19 2023
+// Date        : Sat May 27 21:05:52 2023
 // Host        : DESKTOP-AFM7LO6 running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim {I:/Computer
 //               Organization/project/project.srcs/sources_1/ip/cpuclk/cpuclk_sim_netlist.v}
@@ -80,14 +80,14 @@ module cpuclk_cpuclk_clk_wiz
   (* BOX_TYPE = "PRIMITIVE" *) 
   PLLE2_ADV #(
     .BANDWIDTH("OPTIMIZED"),
-    .CLKFBOUT_MULT(46),
+    .CLKFBOUT_MULT(41),
     .CLKFBOUT_PHASE(0.000000),
     .CLKIN1_PERIOD(10.000000),
     .CLKIN2_PERIOD(0.000000),
-    .CLKOUT0_DIVIDE(40),
+    .CLKOUT0_DIVIDE(82),
     .CLKOUT0_DUTY_CYCLE(0.500000),
     .CLKOUT0_PHASE(0.000000),
-    .CLKOUT1_DIVIDE(92),
+    .CLKOUT1_DIVIDE(82),
     .CLKOUT1_DUTY_CYCLE(0.500000),
     .CLKOUT1_PHASE(0.000000),
     .CLKOUT2_DIVIDE(1),

@@ -83,8 +83,7 @@ module decode32 (
 
     //立即数拓�?
     assign Sign_extend = (opcode == 6'b00_1100 || opcode == 6'b00_1101 || opcode == 6'b00_1110 ||
-                          opcode == 6'b00_1011) ?
-           {16'b0000_0000_0000_0000, immediate} : {sign_bit_extend, immediate};
+                          opcode == 6'b00_1011) ? {16'b0000_0000_0000_0000, immediate} : {sign_bit_extend, immediate};
 
 
 
@@ -112,6 +111,14 @@ module decode32 (
             begin
                 write_register_address = rt;
             end
+            else
+            begin
+                write_register_address = write_register_address;
+            end
+        end
+        else
+        begin
+            write_register_address = write_register_address;
         end
     end
 

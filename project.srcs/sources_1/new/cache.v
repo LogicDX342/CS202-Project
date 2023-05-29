@@ -94,7 +94,7 @@ module cache #(
     // if cache hit, read c_dout from cache to p_din, else read m_dout to p_in
     // wire [D_WIDTH-1:0] c_dout = d_data[index];
     wire sel_out = cache_hit;
-    assign p_din   = sel_out ? c_dout : m_dout ? c_dout : m_dout;
+    assign p_din   = sel_out ? c_dout : m_dout;
     assign p_ready = ~p_rw & cache_hit | (cache_miss | p_rw) & m_ready;
 
 endmodule

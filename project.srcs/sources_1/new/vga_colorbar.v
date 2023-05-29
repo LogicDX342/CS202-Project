@@ -65,7 +65,7 @@ module vga_colorbar (
 
     vga_pic vga_pic_inst (
         .vga_clk  (vga_clk),
-        .sys_rst_n(sys_rst_n),
+        .sys_rst_n(rst_n),
         .pix_x    (pix_x),
         .pix_y    (pix_y),
         .input_a  (input_a),

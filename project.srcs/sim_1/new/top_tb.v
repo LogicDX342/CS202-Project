@@ -8,7 +8,7 @@ module CPU_TOP_tb;
   reg [15:0] switch2N4_in=0;
   wire [15:0] led2N4;
   reg start_pg_in = 0;
-  reg rx = 0;
+  reg rx = 1;
   wire tx;
   wire hsync;
   wire vsync;
@@ -30,18 +30,42 @@ module CPU_TOP_tb;
 
   initial begin
     begin
-      #4000
+      #1000
       fpga_rst_in = 0;
-      #500
-      start_pg_in=1;
-      #500
-      start_pg_in=0;
-      #3000
+      #400
+      // start_pg_in=1;
+      // #100
+      // start_pg_in=0;
+      // #100
+      // fpga_rst_in=1;
+      // #100
+      // fpga_rst_in=0;
+      //0000_data(8)_mod(3)_conf(1)
+      switch2N4_in=16'b0000_0010_0000_0000;
+      #1000
+
+      switch2N4_in=16'b0000_0010_0000_0001;
+      #1000
+      switch2N4_in=16'b0000_0010_0000_0000;
+      #1000
+      switch2N4_in=16'b0000_0010_0000_0001;
+      #1000
+      switch2N4_in=16'b0000_0010_0000_0000;
+      #5000
+
+      switch2N4_in=16'b0000_0010_0000_0011;
+      #1000
+      switch2N4_in=16'b0000_0010_0000_0010;
+      #1000
+      switch2N4_in=16'b0000_0000_0111_0011;
+      #1000
+      switch2N4_in=16'b0000_0000_0111_0010;
+      #10000
       $finish;
     end
   end
 
   always
-    #5  fpga_clk = ! fpga_clk ;
+    #1  fpga_clk = ! fpga_clk ;
 
 endmodule

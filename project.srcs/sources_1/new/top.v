@@ -38,7 +38,6 @@ module CPU_TOP (
     wire rst;
     // UART Programmer Pinouts
     wire upg_clk;
-    wire vga_clk;
     cpuclk clock (
         .clk_in1 (fpga_clk),
         .clk_out1(clk),
@@ -93,11 +92,19 @@ module CPU_TOP (
         .upg_rx_i  (rx),
         .upg_tx_o  (tx)
     );
+    // assign upg_clk = upg_clk_o;
+    // assign upg_wen = 0;
+    // assign upg_adr = 0;
+    // assign upg_dat = 0;
+    // assign upg_done = 0;
+    // assign tx=0;
+
 
     wire [15:0] rom_adr;
     wire [31:0] Instruction;
 
     programrom programrom_dut (
+        .rom_rst_i    (rst),
         .rom_clk_i    (clk),
         .rom_adr_i    (rom_adr),
         .Instruction_o(Instruction),
@@ -215,6 +222,7 @@ module CPU_TOP (
     wire [31:0] ram_dat_o;
 
     dmemory32 dmemory32_dut (
+        .ram_rst_i (rst),
         .ram_clk_i (clk),
         .ram_wen_i (MemWrite),
         .ram_adr_i (ram_adr_i[15:0]),
@@ -266,16 +274,16 @@ module CPU_TOP (
     );
 
 
-    // vga_colorbar vga_colorbar_dut (
-    //     .sys_clk  (fpga_clk),
-    //     .sys_rst_n(~rst),
-    //     .input_a  (ioread_data[7:0]),
-    //     .input_b  (ioread_data[7:0]),
-    //     .output_a (led2N4[7:0]),
-    //     .hsync    (hsync),
-    //     .vsync    (vsync),
-    //     .vga_rgb  (vga_rgb)
-    // );
+    vga_colorbar vga_colorbar_dut (
+        .sys_clk  (fpga_clk),
+        .sys_rst_n(rst),
+        .input_a  (ioread_data[7:0]),
+        .input_b  (ioread_data[7:0]),
+        .output_a (led2N4[7:0]),
+        .hsync    (hsync),
+        .vsync    (vsync),
+        .vga_rgb  (vga_rgb)
+    );
 
 
 endmodule

@@ -89,6 +89,7 @@ module Ifetc32 (
             end
             else
             begin
+                link_addr <= 32'h0000_0000;
                 pc <= next_pc;
             end
         end
