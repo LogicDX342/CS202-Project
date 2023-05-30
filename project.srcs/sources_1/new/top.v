@@ -33,7 +33,10 @@ module CPU_TOP (
     output        tx,            // send data by UART
     output        hsync,
     output        vsync,
-    output [11:0] vga_rgb
+    output [11:0] vga_rgb,
+    output [ 7:0] seg0,
+    output [ 7:0] seg1,
+    output [ 7:0] an
 );
     wire clk;
     wire rst;
@@ -55,7 +58,7 @@ module CPU_TOP (
         .clock  (clk),
         .rst_n  (1'b1),
         .key_in ({fpga_rst_in, switch2N4_in, btn_in, start_pg_in}),
-        .key_out({fpga_rst, switch2N4, start_pg, btn})
+        .key_out({fpga_rst, switch2N4, btn, start_pg})
     );
 
 
@@ -72,18 +75,18 @@ module CPU_TOP (
     //data to program_rom or dmemory32
     wire [31:0] upg_dat;
     // Generate UART Programmer reset signal
-    reg upg_rst = 0;
+    reg upg_rst = 1;
     always @(posedge fpga_clk) begin
-        if (spg_bufg) upg_rst = 1;
-        if (fpga_rst) upg_rst = 0;
+        if (spg_bufg) upg_rst = 0;
+        if (fpga_rst) upg_rst = 1;
     end
     //used for other modules which don't relateto UART wire rst;
-    assign rst = fpga_rst | upg_rst;
+    assign rst = fpga_rst & upg_rst;
 
     wire upg_clk_o;
     uart_bmpg_0 uart (
         .upg_clk_i (upg_clk),    // 10MHz
-        .upg_rst_i (~upg_rst),   // High active
+        .upg_rst_i (upg_rst),    // High active
         // blkram signals
         .upg_clk_o (upg_clk_o),
         .upg_wen_o (upg_wen),
@@ -250,7 +253,7 @@ module CPU_TOP (
         .mWrite    (MemWrite),
         .ioRead    (IORead),
         .ioWrite   (IOWrite),
-        .addr_in   (Addr_Result),
+        .addr_in   (ALU_Result),
         .addr_out  (ram_adr_i),
         .m_rdata   (ram_dat_o),
         .io_rdata  (ioread_data),
@@ -274,7 +277,7 @@ module CPU_TOP (
         .reset             (rst),
         .ior               (IORead),
         .switchctrl        (SwitchCtrl),
-        .ioread_data_switch({switch2N4[15:2], btn}),
+        .ioread_data_switch({switch2N4[15:1], btn}),
         .ioread_data       (ioread_data)
     );
 
@@ -288,6 +291,16 @@ module CPU_TOP (
         .hsync    (hsync),
         .vsync    (vsync),
         .vga_rgb  (vga_rgb)
+    );
+
+    segLED segLED_dut (
+        .clk   (clk),
+        .rst_n (rst),
+        .inputA(led2N4[7:0]),
+        .inputB(led2N4[15:8]),
+        .seg0  (seg0),
+        .seg1  (seg1),
+        .an    (an)
     );
 
 

@@ -8,6 +8,7 @@ module CPU_TOP_tb;
   reg [15:0] switch2N4_in=0;
   wire [15:0] led2N4;
   reg start_pg_in = 0;
+  wire btn_in = switch2N4_in[0];
   reg rx = 1;
   wire tx;
   wire hsync;
@@ -21,6 +22,7 @@ module CPU_TOP_tb;
     .switch2N4_in (switch2N4_in ),
     .led2N4 (led2N4 ),
     .start_pg_in (start_pg_in ),
+    .btn_in (btn_in ),
     .rx (rx ),
     .tx (tx ),
     .hsync (hsync ),
@@ -46,22 +48,21 @@ module CPU_TOP_tb;
       switch2N4_in=16'b0000_0010_0000_0000;
       #1000
 
-      switch2N4_in=16'b0000_0010_0000_0001;
+      switch2N4_in=16'b0000_0010_0000_1111;
       #1000
-      switch2N4_in=16'b0000_0000_0011_0000;
+      switch2N4_in=16'b0000_0000_0000_1110;
       #1000
-      switch2N4_in=16'b0000_0000_0011_0001;
+      switch2N4_in=16'b0000_0000_0011_1111;
       #1000
-      switch2N4_in=16'b0000_0000_0011_0000;
-      #5000
-
-      switch2N4_in=16'b0000_0010_0000_0011;
+      switch2N4_in=16'b0000_0000_0011_1110;
       #1000
-      switch2N4_in=16'b0000_0010_0000_0010;
+      switch2N4_in=16'b0000_0010_0110_1111;
       #1000
-      switch2N4_in=16'b0000_0000_0111_0011;
+      switch2N4_in=16'b0000_0010_0110_1110;
       #1000
-      switch2N4_in=16'b0000_0000_0111_0010;
+      switch2N4_in=16'b0000_0000_0000_0101;
+      #1000
+      switch2N4_in=16'b0000_0000_0000_0100;
       #10000
       $finish;
     end

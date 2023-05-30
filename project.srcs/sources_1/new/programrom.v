@@ -40,8 +40,8 @@ module programrom (
 
     /* if  kickOff is 1 means  CPU work on normal mode,
     otherwise CPU work on Uart communication mode */
-    wire rom_clk = !rom_clk_i;
-    wire kickOff = !upg_rst_i | (upg_rst_i & upg_done_i);
+    wire rom_clk = ~rom_clk_i;
+    wire kickOff = upg_rst_i | (~upg_rst_i & upg_done_i);
     prgrom instmem (
                .clka (kickOff ? rom_clk : upg_clk_i),
                .wea  (kickOff ? 1'b0 : upg_wen_i),

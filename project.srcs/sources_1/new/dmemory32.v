@@ -36,37 +36,46 @@ module dmemory32 (
         input upg_done_i // 1 if programming is finished
     );
 
-    wire ram_clk = ~ram_clk_i;
+    wire ram_clk = ram_clk_i;
     /* CPU work on normal mode when kickOff is 1. CPU work on Uart communicate mode when kickOff is 0.*/
-    wire kickOff = ~upg_rst_i | (upg_rst_i & upg_done_i);
+    wire kickOff = upg_rst_i | (~upg_rst_i & upg_done_i);
 
     wire [15:0] m_a;
     wire [31:0] m_dout;
     wire [31:0] m_din;
     wire m_rw;
 
-    RAM ram (
-            .clka (kickOff ? ram_clk : upg_clk_i),
-            .wea (kickOff ? m_rw : upg_wen_i),
-            .addra (kickOff ? m_a[15:2] : upg_adr_i),
-            .dina (kickOff ? m_din : upg_dat_i),
-            .douta (m_dout)
-        );
+    // RAM ram (
+    //         .clka (kickOff ? ram_clk : upg_clk_i),
+    //         .wea (kickOff ? m_rw : upg_wen_i),
+    //         .addra (kickOff ? ram_adr_i[15:2] : upg_adr_i),
+    //         .dina (kickOff ? ram_dat_i : upg_dat_i),
+    //         .douta (ram_dat_o)
+    //     );
 
-    cache d_cache_dut (
-              .clk     (ram_clk),
-              .rst_n   (ram_rst_i),
-              .p_a     (ram_adr_i),
-              .p_dout  (ram_dat_i),
-              .p_din   (ram_dat_o),
-              .p_strobe(1'b1),
-              .p_rw    (ram_wen_i),
-              // .p_ready (p_ready),
-              .m_a     (m_a),
-              .m_dout  (m_dout),
-              .m_din   (m_din),
-              // .m_strobe(m_strobe),
-              .m_rw    (m_rw),
-              .m_ready (1'b1)
-          );
+    RAM ram (
+        .clka (kickOff ? ram_clk : 0),
+        .wea (kickOff ? ram_wen_i : 0),
+        .addra (kickOff ? ram_adr_i[15:2] : 0),
+        .dina (kickOff ? ram_dat_i : 0),
+        .douta (ram_dat_o)
+    );
+
+
+    // cache d_cache_dut (
+    //           .clk     (ram_clk),
+    //           .rst_n   (ram_rst_i),
+    //           .p_a     (ram_adr_i),
+    //           .p_dout  (ram_dat_i),
+    //           .p_din   (ram_dat_o),
+    //           .p_strobe(1'b1),
+    //           .p_rw    (ram_wen_i),
+    //           // .p_ready (p_ready),
+    //           .m_a     (m_a),
+    //           .m_dout  (m_dout),
+    //           .m_din   (m_din),
+    //           // .m_strobe(m_strobe),
+    //           .m_rw    (m_rw),
+    //           .m_ready (1'b1)
+    //       );
 endmodule
