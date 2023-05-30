@@ -138,7 +138,7 @@ module decode32 (
 
     //写操�??
     integer count;
-    always @(posedge clock)
+    always @(negedge clock)
     begin
         if (~reset)
         begin
