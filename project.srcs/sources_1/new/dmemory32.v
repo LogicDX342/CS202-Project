@@ -47,7 +47,7 @@ module dmemory32 (
 
     // RAM ram (
     //         .clka (kickOff ? ram_clk : upg_clk_i),
-    //         .wea (kickOff ? m_rw : upg_wen_i),
+    //         .wea (kickOff ? ram_wen_i : upg_wen_i),
     //         .addra (kickOff ? ram_adr_i[15:2] : upg_adr_i),
     //         .dina (kickOff ? ram_dat_i : upg_dat_i),
     //         .douta (ram_dat_o)
@@ -55,27 +55,27 @@ module dmemory32 (
 
     RAM ram (
         .clka (kickOff ? ram_clk : 0),
-        .wea (kickOff ? ram_wen_i : 0),
-        .addra (kickOff ? ram_adr_i[15:2] : 0),
-        .dina (kickOff ? ram_dat_i : 0),
-        .douta (ram_dat_o)
+        .wea (kickOff ? m_rw : 0),
+        .addra (kickOff ? m_a[15:2] : 0),
+        .dina (kickOff ? m_din : 0),
+        .douta (m_dout)
     );
 
 
-    // cache d_cache_dut (
-    //           .clk     (ram_clk),
-    //           .rst_n   (ram_rst_i),
-    //           .p_a     (ram_adr_i),
-    //           .p_dout  (ram_dat_i),
-    //           .p_din   (ram_dat_o),
-    //           .p_strobe(1'b1),
-    //           .p_rw    (ram_wen_i),
-    //           // .p_ready (p_ready),
-    //           .m_a     (m_a),
-    //           .m_dout  (m_dout),
-    //           .m_din   (m_din),
-    //           // .m_strobe(m_strobe),
-    //           .m_rw    (m_rw),
-    //           .m_ready (1'b1)
-    //       );
+    cache d_cache_dut (
+              .clk     (ram_clk),
+              .rst_n   (ram_rst_i),
+              .p_a     (ram_adr_i),
+              .p_dout  (ram_dat_i),
+              .p_din   (ram_dat_o),
+              .p_strobe(1'b1),
+              .p_rw    (ram_wen_i),
+              // .p_ready (p_ready),
+              .m_a     (m_a),
+              .m_dout  (m_dout),
+              .m_din   (m_din),
+              // .m_strobe(m_strobe),
+              .m_rw    (m_rw),
+              .m_ready (1'b1)
+          );
 endmodule

@@ -21,23 +21,23 @@
 
 
 module vga_pic (
-    input wire       vga_clk,
-    input wire       sys_rst_n,
-    input wire [9:0] pix_x,
-    input wire [9:0] pix_y,
-    input wire [7:0] input_a,
-    input wire [7:0] input_b,
-    input wire [7:0] output_a,
+        input wire       vga_clk,
+        input wire       sys_rst_n,
+        input wire [9:0] pix_x,
+        input wire [9:0] pix_y,
+        input wire [2:0] mod,
+        input wire [7:0] input_a,
+        input wire [7:0] output_a,
 
-    output reg [11:0] pix_data
-);
+        output reg [11:0] pix_data
+    );
 
     parameter H_VALID = 10'd640, V_VALID = 10'D480;
 
-    parameter RED = 12'hF10, ORANGE = 12'hFC0, YELLOW = 12'hFFE, GREEN = 12'h07E, CYAN = 12'h07F,
-        BLUE = 12'hFFF, PURPPLE = 12'hF81, BLACK = 12'h000, WHITE = 12'hFFF, GRAY = 12'hD69;
+    parameter RED = 12'hF10, ORANGE = 12'hFC0, YELLOW = 12'hFFE, GREEN = 12'h07E, CYAN = 12'h07F, BLUE = 12'hFFF,
+              PURPPLE = 12'hF81, BLACK = 12'h000, WHITE = 12'hFFF, GRAY = 12'hD69;
 
-        
+
     parameter HEIGHT = 10'd16, WIDTH = 10'd7;
 
     parameter POS_X_1 = 10'd100, POS_Y_1 = 10'd100, WIDTH_1 = 10'd32;
@@ -46,19 +46,19 @@ module vga_pic (
     assign x_cnt_1 = pix_x - POS_X_1;
     assign y_cnt_1 = pix_y - POS_Y_1;
 
-    parameter POS_X_1_1 = POS_X_1 + 10'd8;
+    parameter POS_X_1_1 = POS_X_1 + WIDTH_1 + 10'd8;
     wire [9:0] x_cnt_1_1;
     wire [9:0] y_cnt_1_1;
     assign x_cnt_1_1 = pix_x - POS_X_1_1;
     assign y_cnt_1_1 = pix_y - POS_Y_1;
 
-    parameter POS_X_1_2 = POS_X_1 + 10'd16;
+    parameter POS_X_1_2 = POS_X_1 + WIDTH_1 + 10'd16;
     wire [9:0] x_cnt_1_2;
     wire [9:0] y_cnt_1_2;
     assign x_cnt_1_2 = pix_x - POS_X_1_2;
     assign y_cnt_1_2 = pix_y - POS_Y_1;
 
-    parameter POS_X_1_3 = POS_X_1 + 10'd24;
+    parameter POS_X_1_3 = POS_X_1 + WIDTH_1 + 10'd24;
     wire [9:0] x_cnt_1_3;
     wire [9:0] y_cnt_1_3;
     assign x_cnt_1_3 = pix_x - POS_X_1_3;
@@ -67,56 +67,56 @@ module vga_pic (
     reg [WIDTH_1-1:0] char_1[15:0];
 
 
-    
+
     parameter POS_X_2 = 10'd100, POS_Y_2 = 10'd200, WIDTH_2 = 10'd56;
     wire [9:0] x_cnt_2;
     wire [9:0] y_cnt_2;
     assign x_cnt_2 = pix_x - POS_X_2;
     assign y_cnt_2 = pix_y - POS_Y_2;
 
-    parameter POS_X_2_1 = POS_X_2 + 10'd8;
+    parameter POS_X_2_1 = POS_X_2 + WIDTH_2 + 10'd8;
     wire [9:0] x_cnt_2_1;
     wire [9:0] y_cnt_2_1;
     assign x_cnt_2_1 = pix_x - POS_X_2_1;
     assign y_cnt_2_1 = pix_y - POS_Y_2;
 
-    parameter POS_X_2_2 = POS_X_2 + 10'd16;
+    parameter POS_X_2_2 = POS_X_2 + WIDTH_2 + 10'd16;
     wire [9:0] x_cnt_2_2;
     wire [9:0] y_cnt_2_2;
     assign x_cnt_2_2 = pix_x - POS_X_2_2;
     assign y_cnt_2_2 = pix_y - POS_Y_2;
 
-    parameter POS_X_2_3 = POS_X_2 + 10'd24;
+    parameter POS_X_2_3 = POS_X_2 + WIDTH_2 + 10'd24;
     wire [9:0] x_cnt_2_3;
     wire [9:0] y_cnt_2_3;
     assign x_cnt_2_3 = pix_x - POS_X_2_3;
     assign y_cnt_2_3 = pix_y - POS_Y_2;
 
-    parameter POS_X_2_4 = POS_X_2 + 10'd32;
+    parameter POS_X_2_4 = POS_X_2 + WIDTH_2 + 10'd32;
     wire [9:0] x_cnt_2_4;
     wire [9:0] y_cnt_2_4;
     assign x_cnt_2_4 = pix_x - POS_X_2_4;
     assign y_cnt_2_4 = pix_y - POS_Y_2;
 
-    parameter POS_X_2_5 = POS_X_2 + 10'd40;
+    parameter POS_X_2_5 = POS_X_2 + WIDTH_2 + 10'd40;
     wire [9:0] x_cnt_2_5;
     wire [9:0] y_cnt_2_5;
     assign x_cnt_2_5 = pix_x - POS_X_2_5;
     assign y_cnt_2_5 = pix_y - POS_Y_2;
 
-    parameter POS_X_2_6 = POS_X_2 + 10'd48;
+    parameter POS_X_2_6 = POS_X_2 + WIDTH_2 + 10'd48;
     wire [9:0] x_cnt_2_6;
     wire [9:0] y_cnt_2_6;
     assign x_cnt_2_6 = pix_x - POS_X_2_6;
     assign y_cnt_2_6 = pix_y - POS_Y_2;
 
-    parameter POS_X_2_7 = POS_X_2 + 10'd56;
+    parameter POS_X_2_7 = POS_X_2 + WIDTH_2 + 10'd56;
     wire [9:0] x_cnt_2_7;
     wire [9:0] y_cnt_2_7;
     assign x_cnt_2_7 = pix_x - POS_X_2_7;
     assign y_cnt_2_7 = pix_y - POS_Y_2;
 
-    parameter POS_X_2_8 = POS_X_2 + 10'd64;
+    parameter POS_X_2_8 = POS_X_2 + WIDTH_2 + 10'd64;
     wire [9:0] x_cnt_2_8;
     wire [9:0] y_cnt_2_8;
     assign x_cnt_2_8 = pix_x - POS_X_2_8;
@@ -141,49 +141,49 @@ module vga_pic (
     // wire [3:0] mile_units;
     // assign mile_units = miles_bin % 10;
 
-    parameter POS_X_3_1 = POS_X_3 + 10'd8;
+    parameter POS_X_3_1 = POS_X_3 + WIDTH_3 + 10'd8;
     wire [9:0] x_cnt_3_1;
     wire [9:0] y_cnt_3_1;
     assign x_cnt_3_1 = pix_x - POS_X_3_1;
     assign y_cnt_3_1 = pix_y - POS_Y_3;
 
-    parameter POS_X_3_2 = POS_X_3 + 10'd16;
+    parameter POS_X_3_2 = POS_X_3 + WIDTH_3 + 10'd16;
     wire [9:0] x_cnt_3_2;
     wire [9:0] y_cnt_3_2;
     assign x_cnt_3_2 = pix_x - POS_X_3_2;
     assign y_cnt_3_2 = pix_y - POS_Y_3;
 
-    parameter POS_X_3_3 = POS_X_3 + 10'd24;
+    parameter POS_X_3_3 = POS_X_3 + WIDTH_3 + 10'd24;
     wire [9:0] x_cnt_3_3;
     wire [9:0] y_cnt_3_3;
     assign x_cnt_3_3 = pix_x - POS_X_3_3;
     assign y_cnt_3_3 = pix_y - POS_Y_3;
 
-    parameter POS_X_3_4 = POS_X_3 + 10'd32;
+    parameter POS_X_3_4 = POS_X_3 + WIDTH_3 + 10'd32;
     wire [9:0] x_cnt_3_4;
     wire [9:0] y_cnt_3_4;
     assign x_cnt_3_4 = pix_x - POS_X_3_4;
     assign y_cnt_3_4 = pix_y - POS_Y_3;
 
-    parameter POS_X_3_5 = POS_X_3 + 10'd40;
+    parameter POS_X_3_5 = POS_X_3 + WIDTH_3 + 10'd40;
     wire [9:0] x_cnt_3_5;
     wire [9:0] y_cnt_3_5;
     assign x_cnt_3_5 = pix_x - POS_X_3_5;
     assign y_cnt_3_5 = pix_y - POS_Y_3;
 
-    parameter POS_X_3_6 = POS_X_3 + 10'd48;
+    parameter POS_X_3_6 = POS_X_3 + WIDTH_3 + 10'd48;
     wire [9:0] x_cnt_3_6;
     wire [9:0] y_cnt_3_6;
     assign x_cnt_3_6 = pix_x - POS_X_3_6;
     assign y_cnt_3_6 = pix_y - POS_Y_3;
 
-    parameter POS_X_3_7 = POS_X_3 + 10'd56;
+    parameter POS_X_3_7 = POS_X_3 + WIDTH_3 + 10'd56;
     wire [9:0] x_cnt_3_7;
     wire [9:0] y_cnt_3_7;
     assign x_cnt_3_7 = pix_x - POS_X_3_7;
     assign y_cnt_3_7 = pix_y - POS_Y_3;
 
-    parameter POS_X_3_8 = POS_X_3 + 10'd64;
+    parameter POS_X_3_8 = POS_X_3 + WIDTH_3 + 10'd64;
     wire [9:0] x_cnt_3_8;
     wire [9:0] y_cnt_3_8;
     assign x_cnt_3_8 = pix_x - POS_X_3_8;
@@ -205,7 +205,8 @@ module vga_pic (
     // reg [WIDTH-1:0] num_9[15:0];
 
 
-    always @(posedge vga_clk) begin
+    always @(posedge vga_clk)
+    begin
 
         char_1[0]  <= 64'h00000000;  //mod:
         char_1[1]  <= 64'h00000000;
@@ -429,253 +430,380 @@ module vga_pic (
         // num_9[15]  <= 8'h00;
     end
 
-    always @(posedge vga_clk or negedge sys_rst_n) begin
-        if (sys_rst_n == 1'b0) begin
+    always @(posedge vga_clk or negedge sys_rst_n)
+    begin
+        if (sys_rst_n == 1'b0)
+        begin
             pix_data <= BLACK;
-        end else begin
+        end
+        else
+        begin
             if ((pix_x >= POS_X_1) && (pix_x < POS_X_1 + WIDTH_1) && (pix_y >= POS_Y_1) &&
-                (pix_y < POS_Y_1 + HEIGHT)) begin
-                if (char_1[y_cnt_1][10'd47-x_cnt_1]) pix_data <= GRAY;
-                else pix_data <= BLUE;
+                    (pix_y < POS_Y_1 + HEIGHT))
+            begin
+                if (char_1[y_cnt_1][10'd31-x_cnt_1])
+                    pix_data <= GRAY;
+                else
+                    pix_data <= BLUE;
             end
             if ((pix_x >= POS_X_1_1) && (pix_x < POS_X_1_1 + WIDTH) && (pix_y >= POS_Y_1) &&
-                (pix_y < POS_Y_1 + HEIGHT)) begin  
-                case (input_a[2])
+                    (pix_y < POS_Y_1 + HEIGHT))
+            begin
+                case (mod[2])
                     16'd0:
-                    if (num_0[y_cnt_1_1][10'd7-x_cnt_1_1]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_1_1][10'd7-x_cnt_1_1])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_1_1][10'd7-x_cnt_1_1]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_1_1][10'd7-x_cnt_1_1])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_1_2) && (pix_x < POS_X_1_2 + WIDTH) && (pix_y >= POS_Y_1) &&
-                (pix_y < POS_Y_1 + HEIGHT)) begin  
-                case (input_a[1])
+                    (pix_y < POS_Y_1 + HEIGHT))
+            begin
+                case (mod[1])
                     16'd0:
-                    if (num_0[y_cnt_1_2][10'd7-x_cnt_1_2]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_1_2][10'd7-x_cnt_1_2])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_1_2][10'd7-x_cnt_1_2]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
-                endcase
-            end  
-            if ((pix_x >= POS_X_1_3) && (pix_x < POS_X_1_3 + WIDTH) && (pix_y >= POS_Y_1) &&
-                (pix_y < POS_Y_1 + HEIGHT)) begin  
-                case (input_a[0])
-                    16'd0:
-                    if (num_0[y_cnt_1_3][10'd7-x_cnt_1_3]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    16'd1:
-                    if (num_1[y_cnt_1_3][10'd7-x_cnt_1_3]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_1_2][10'd7-x_cnt_1_2])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
-            if ((pix_x >= POS_X_2) && (pix_x < POS_X_2 + WIDTH_2) && (pix_y >= POS_Y_2) &&
-                (pix_y < POS_Y_2 + HEIGHT)) begin
-                if (char_2[y_cnt_2][10'd47-x_cnt_2]) pix_data <= GRAY;
-                else pix_data <= BLUE;
+            if ((pix_x >= POS_X_1_3) && (pix_x < POS_X_1_3 + WIDTH) && (pix_y >= POS_Y_1) &&
+                    (pix_y < POS_Y_1 + HEIGHT))
+            begin
+                case (mod[0])
+                    16'd0:
+                        if (num_0[y_cnt_1_3][10'd7-x_cnt_1_3])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    16'd1:
+                        if (num_1[y_cnt_1_3][10'd7-x_cnt_1_3])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
+                endcase
+            end
+            if ((pix_x >= POS_X_2) && (pix_x < POS_X_2 + WIDTH_2 + WIDTH_2) && (pix_y >= POS_Y_2) &&
+                    (pix_y < POS_Y_2 + HEIGHT))
+            begin
+                if (char_2[y_cnt_2][10'd55-x_cnt_2])
+                    pix_data <= GRAY;
+                else
+                    pix_data <= BLUE;
             end
             if ((pix_x >= POS_X_2_1) && (pix_x < POS_X_2_1 + WIDTH) && (pix_y >= POS_Y_2) &&
-                (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[7])
+                    (pix_y < POS_Y_2 + HEIGHT))
+            begin
+                case (input_a[7])
                     16'd0:
-                    if (num_0[y_cnt_2_1][10'd7-x_cnt_2_1]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_2_1][10'd7-x_cnt_2_1])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_2_1][10'd7-x_cnt_2_1]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_2_1][10'd7-x_cnt_2_1])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_2_2) && (pix_x < POS_X_2_2 + WIDTH) && (pix_y >= POS_Y_2) &&
-                (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[6])
+                    (pix_y < POS_Y_2 + HEIGHT))
+            begin
+                case (input_a[6])
                     16'd0:
-                    if (num_0[y_cnt_2_2][10'd7-x_cnt_2_2]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_2_2][10'd7-x_cnt_2_2])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_2_2][10'd7-x_cnt_2_2]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_2_2][10'd7-x_cnt_2_2])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
-            end  
+            end
             if ((pix_x >= POS_X_2_3) && (pix_x < POS_X_2_3 + WIDTH) && (pix_y >= POS_Y_2) &&
-                (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[5])
+                    (pix_y < POS_Y_2 + HEIGHT))
+            begin
+                case (input_a[5])
                     16'd0:
-                    if (num_0[y_cnt_2_3][10'd7-x_cnt_2_3]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_2_3][10'd7-x_cnt_2_3])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_2_3][10'd7-x_cnt_2_3]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_2_3][10'd7-x_cnt_2_3])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_2_4) && (pix_x < POS_X_2_4 + WIDTH) && (pix_y >= POS_Y_2) &&
-                (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[4])
+                    (pix_y < POS_Y_2 + HEIGHT))
+            begin
+                case (input_a[4])
                     16'd0:
-                    if (num_0[y_cnt_2_4][10'd7-x_cnt_2_4]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_2_4][10'd7-x_cnt_2_4])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_2_4][10'd7-x_cnt_2_4]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_2_4][10'd7-x_cnt_2_4])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_2_5) && (pix_x < POS_X_2_5 + WIDTH) && (pix_y >= POS_Y_2) &&
-                (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[3])
+                    (pix_y < POS_Y_2 + HEIGHT))
+            begin
+                case (input_a[3])
                     16'd0:
-                    if (num_0[y_cnt_2_5][10'd7-x_cnt_2_5]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_2_5][10'd7-x_cnt_2_5])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_2_5][10'd7-x_cnt_2_5]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_2_5][10'd7-x_cnt_2_5])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_2_6) && (pix_x < POS_X_2_6 + WIDTH) && (pix_y >= POS_Y_2) &&
-                (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[2])
+                    (pix_y < POS_Y_2 + HEIGHT))
+            begin
+                case (input_a[2])
                     16'd0:
-                    if (num_0[y_cnt_2_6][10'd7-x_cnt_2_6]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_2_6][10'd7-x_cnt_2_6])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_2_6][10'd7-x_cnt_2_6]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_2_6][10'd7-x_cnt_2_6])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_2_7) && (pix_x < POS_X_2_7 + WIDTH) && (pix_y >= POS_Y_2) &&
-                (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[1])
+                    (pix_y < POS_Y_2 + HEIGHT))
+            begin
+                case (input_a[1])
                     16'd0:
-                    if (num_0[y_cnt_2_7][10'd7-x_cnt_2_7]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_2_7][10'd7-x_cnt_2_7])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_2_7][10'd7-x_cnt_2_7]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_2_7][10'd7-x_cnt_2_7])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_2_8) && (pix_x < POS_X_2_8 + WIDTH) && (pix_y >= POS_Y_2) &&
-                (pix_y < POS_Y_2 + HEIGHT)) begin  
-                case (input_b[0])
+                    (pix_y < POS_Y_2 + HEIGHT))
+            begin
+                case (input_a[0])
                     16'd0:
-                    if (num_0[y_cnt_2_8][10'd7-x_cnt_2_8]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_2_8][10'd7-x_cnt_2_8])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_2_8][10'd7-x_cnt_2_8]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_2_8][10'd7-x_cnt_2_8])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
-            
 
-            if ((pix_x >= POS_X_3) && (pix_x < POS_X_3 + WIDTH_3) && (pix_y >= POS_Y_3) &&
-                (pix_y < POS_Y_3 + HEIGHT)) begin
-                if (char_3[y_cnt_3][10'd47-x_cnt_3]) pix_data <= GRAY;
-                else pix_data <= BLUE;
+
+            if ((pix_x >= POS_X_3) && (pix_x < POS_X_3 + WIDTH_3 + WIDTH_3) && (pix_y >= POS_Y_3) &&
+                    (pix_y < POS_Y_3 + HEIGHT))
+            begin
+                if (char_3[y_cnt_3][10'd55-x_cnt_3])
+                    pix_data <= GRAY;
+                else
+                    pix_data <= BLUE;
             end
             if ((pix_x >= POS_X_3_1) && (pix_x < POS_X_3_1 + WIDTH) && (pix_y >= POS_Y_3) &&
-                (pix_y < POS_Y_3 + HEIGHT)) begin  
+                    (pix_y < POS_Y_3 + HEIGHT))
+            begin
                 case (output_a[7])
                     16'd0:
-                    if (num_0[y_cnt_3_1][10'd7-x_cnt_3_1]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_3_1][10'd7-x_cnt_3_1])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_3_1][10'd7-x_cnt_3_1]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_3_1][10'd7-x_cnt_3_1])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_3_2) && (pix_x < POS_X_3_2 + WIDTH) && (pix_y >= POS_Y_3) &&
-                (pix_y < POS_Y_3 + HEIGHT)) begin  
+                    (pix_y < POS_Y_3 + HEIGHT))
+            begin
                 case (output_a[6])
                     16'd0:
-                    if (num_0[y_cnt_3_2][10'd7-x_cnt_3_2]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_3_2][10'd7-x_cnt_3_2])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_3_2][10'd7-x_cnt_3_2]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_3_2][10'd7-x_cnt_3_2])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
-            end  
+            end
             if ((pix_x >= POS_X_3_3) && (pix_x < POS_X_3_3 + WIDTH) && (pix_y >= POS_Y_3) &&
-                (pix_y < POS_Y_3 + HEIGHT)) begin  
+                    (pix_y < POS_Y_3 + HEIGHT))
+            begin
                 case (output_a[5])
                     16'd0:
-                    if (num_0[y_cnt_3_3][10'd7-x_cnt_3_3]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_3_3][10'd7-x_cnt_3_3])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_3_3][10'd7-x_cnt_3_3]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_3_3][10'd7-x_cnt_3_3])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_3_4) && (pix_x < POS_X_3_4 + WIDTH) && (pix_y >= POS_Y_3) &&
-                (pix_y < POS_Y_3 + HEIGHT)) begin  
+                    (pix_y < POS_Y_3 + HEIGHT))
+            begin
                 case (output_a[4])
                     16'd0:
-                    if (num_0[y_cnt_3_4][10'd7-x_cnt_3_4]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_3_4][10'd7-x_cnt_3_4])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_3_4][10'd7-x_cnt_3_4]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_3_4][10'd7-x_cnt_3_4])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_3_5) && (pix_x < POS_X_3_5 + WIDTH) && (pix_y >= POS_Y_3) &&
-                (pix_y < POS_Y_3 + HEIGHT)) begin  
+                    (pix_y < POS_Y_3 + HEIGHT))
+            begin
                 case (output_a[3])
                     16'd0:
-                    if (num_0[y_cnt_3_5][10'd7-x_cnt_3_5]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_3_5][10'd7-x_cnt_3_5])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_3_5][10'd7-x_cnt_3_5]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_3_5][10'd7-x_cnt_3_5])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_3_6) && (pix_x < POS_X_3_6 + WIDTH) && (pix_y >= POS_Y_3) &&
-                (pix_y < POS_Y_3 + HEIGHT)) begin  
+                    (pix_y < POS_Y_3 + HEIGHT))
+            begin
                 case (output_a[2])
                     16'd0:
-                    if (num_0[y_cnt_3_6][10'd7-x_cnt_3_6]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_3_6][10'd7-x_cnt_3_6])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_3_6][10'd7-x_cnt_3_6]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_3_6][10'd7-x_cnt_3_6])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_3_7) && (pix_x < POS_X_3_7 + WIDTH) && (pix_y >= POS_Y_3) &&
-                (pix_y < POS_Y_3 + HEIGHT)) begin  
+                    (pix_y < POS_Y_3 + HEIGHT))
+            begin
                 case (output_a[1])
                     16'd0:
-                    if (num_0[y_cnt_3_7][10'd7-x_cnt_3_7]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_3_7][10'd7-x_cnt_3_7])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_3_7][10'd7-x_cnt_3_7]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_3_7][10'd7-x_cnt_3_7])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
             if ((pix_x >= POS_X_3_8) && (pix_x < POS_X_3_8 + WIDTH) && (pix_y >= POS_Y_3) &&
-                (pix_y < POS_Y_3 + HEIGHT)) begin  
+                    (pix_y < POS_Y_3 + HEIGHT))
+            begin
                 case (output_a[0])
                     16'd0:
-                    if (num_0[y_cnt_3_8][10'd7-x_cnt_3_8]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
+                        if (num_0[y_cnt_3_8][10'd7-x_cnt_3_8])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
                     16'd1:
-                    if (num_1[y_cnt_3_8][10'd7-x_cnt_3_8]) pix_data <= GRAY;
-                    else pix_data <= BLUE;
-                    default: pix_data <= BLUE;
+                        if (num_1[y_cnt_3_8][10'd7-x_cnt_3_8])
+                            pix_data <= GRAY;
+                        else
+                            pix_data <= BLUE;
+                    default:
+                        pix_data <= BLUE;
                 endcase
             end
         end

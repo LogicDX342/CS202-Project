@@ -21,16 +21,16 @@
 
 
 module vga_colorbar (
-    input       sys_clk,    //25MHz
-    input       sys_rst_n,
-    input [7:0] input_a,
-    input [7:0] input_b,
-    input [7:0] output_a,
+        input       sys_clk,    //25MHz
+        input       sys_rst_n,
+        input [2:0] mod,
+        input [7:0] input_a,
+        input [7:0] output_a,
 
-    output        hsync,
-    output        vsync,
-    output [11:0] vga_rgb
-);
+        output        hsync,
+        output        vsync,
+        output [11:0] vga_rgb
+    );
 
 
     wire locked;
@@ -43,35 +43,35 @@ module vga_colorbar (
     assign rst_n = (sys_rst_n && locked);
 
     clk_wiz_0 clk_wiz_inst (
-        // Clock out ports  
-        .clk_out1(vga_clk),
-        // Status and control signals               
-        .reset   (~sys_rst_n),
-        .locked  (locked),
-        // Clock in ports
-        .clk_in1 (sys_clk)
-    );
+                  // Clock out ports
+                  .clk_out1(vga_clk),
+                  // Status and control signals
+                  .reset   (~sys_rst_n),
+                  .locked  (locked),
+                  // Clock in ports
+                  .clk_in1 (sys_clk)
+              );
 
     vga_ctrl vga_ctrl_inst (
-        .vga_clk  (vga_clk),
-        .sys_rst_n(rst_n),
-        .pix_data (pix_data),
-        .pix_x    (pix_x),
-        .pix_y    (pix_y),
-        .hsync    (hsync),
-        .vsync    (vsync),
-        .vga_rgb  (vga_rgb)
-    );
+                 .vga_clk  (vga_clk),
+                 .sys_rst_n(rst_n),
+                 .pix_data (pix_data),
+                 .pix_x    (pix_x),
+                 .pix_y    (pix_y),
+                 .hsync    (hsync),
+                 .vsync    (vsync),
+                 .vga_rgb  (vga_rgb)
+             );
 
     vga_pic vga_pic_inst (
-        .vga_clk  (vga_clk),
-        .sys_rst_n(rst_n),
-        .pix_x    (pix_x),
-        .pix_y    (pix_y),
-        .input_a  (input_a),
-        .input_b  (input_b),
-        .output_a (output_a),
-        .pix_data (pix_data)
-    );
+                .vga_clk  (vga_clk),
+                .sys_rst_n(rst_n),
+                .pix_x    (pix_x),
+                .pix_y    (pix_y),
+                .mod      (mod),
+                .input_a  (input_a),
+                .output_a (output_a),
+                .pix_data (pix_data)
+            );
 
 endmodule

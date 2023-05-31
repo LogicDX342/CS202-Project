@@ -78,7 +78,7 @@ module CPU_TOP (
     reg upg_rst = 1;
     always @(posedge fpga_clk) begin
         if (spg_bufg) upg_rst = 0;
-        if (fpga_rst) upg_rst = 1;
+        if (fpga_rst&spg_bufg==0) upg_rst = 1;
     end
     //used for other modules which don't relateto UART wire rst;
     assign rst = fpga_rst & upg_rst;
@@ -285,8 +285,8 @@ module CPU_TOP (
     vga_colorbar vga_colorbar_dut (
         .sys_clk  (fpga_clk),
         .sys_rst_n(rst),
-        .input_a  (ioread_data[7:0]),
-        .input_b  (ioread_data[7:0]),
+        .mod  (ioread_data[3:1]),
+        .input_a  (ioread_data[15:4]),
         .output_a (led2N4[7:0]),
         .hsync    (hsync),
         .vsync    (vsync),

@@ -38,11 +38,11 @@ module CPU_TOP_tb;
       fpga_rst_in = 1;
       #100
       // start_pg_in=1;
-      // #100
+      // #1000
       // start_pg_in=0;
-      // #100
+      // #1000
       // fpga_rst_in=1;
-      // #100
+      // #1000
       // fpga_rst_in=0;
       //0000_data(8)_mod(3)_conf(1)
       switch2N4_in=16'b0000_0010_0000_0000;
